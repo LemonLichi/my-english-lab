@@ -3,7 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>My English Lab · Final</title>
+<title>My English Lab</title>
+<meta name="theme-color" content="#111827">
+<meta name="description" content="Personal English learning lab with private multi-device sync">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
 <style>
 :root{
   --bg:#f5f7fb;--card:#fff;--text:#162033;--muted:#667085;--line:#e4e9f0;
@@ -402,9 +406,15 @@ main{
 #cloudSyncCard .module-header{align-items:center}
 #cloudSyncCard .note{line-height:1.7}
 
+
+.sync-indicator{position:fixed;right:14px;top:12px;z-index:1000;padding:7px 10px;border-radius:999px;font-size:11px;font-weight:850;border:1px solid var(--line);background:#fff;box-shadow:0 4px 14px rgba(31,42,84,.10);max-width:min(70vw,320px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sync-indicator.ok{color:#067647;background:#ecfdf3;border-color:#b7e4cd}.sync-indicator.busy{color:#2447ae;background:#eef3ff;border-color:#cbd8ff}.sync-indicator.dirty{color:#8a5700;background:#fff8e6;border-color:#f3d79b}.sync-indicator.warn{color:#b42318;background:#fff0ef;border-color:#f0b8b3}.sync-indicator.offline{color:#667085;background:#fff}
+#cloudAdvanced summary{cursor:pointer;font-weight:800;color:#536174}#cloudAdvanced .two{margin-top:10px}
+@media(max-width:760px){.sync-indicator{top:auto;bottom:12px;right:10px}}
 </style>
 </head>
 <body>
+<div id="globalSyncIndicator" class="sync-indicator offline" title="云同步状态">☁ 未登录</div>
 <div class="app">
 <aside>
   <div class="logo">My English Lab <span style="font-size:10px;color:#93a4bf;font-weight:700">FINAL</span></div>
@@ -720,22 +730,18 @@ main{
         <span class="module-badge" id="cloudStatusBadge">未配置</span>
       </div>
 
-      <div class="two">
-        <div>
-          <label>Supabase Project URL</label>
-          <input id="cloudUrl" placeholder="https://xxxx.supabase.co">
+      <details id="cloudAdvanced">
+        <summary>高级设置（一般不需要修改）</summary>
+        <div class="two">
+          <div><label>Supabase Project URL</label><input id="cloudUrl" placeholder="https://xxxx.supabase.co"></div>
+          <div><label>Supabase Publishable Key</label><input id="cloudAnonKey" placeholder="sb_publishable_..."></div>
         </div>
-        <div>
-          <label>Supabase Anon Key</label>
-          <input id="cloudAnonKey" placeholder="eyJhbGciOi...">
+        <div class="row responsive-stack" style="margin-top:10px">
+          <button class="btn secondary" id="saveCloudConfig">保存云端配置</button>
+          <button class="btn ghost" id="testCloudConfig">测试连接</button>
+          <span class="tiny" id="cloudConfigMsg"></span>
         </div>
-      </div>
-
-      <div class="row responsive-stack" style="margin-top:10px">
-        <button class="btn secondary" id="saveCloudConfig">保存云端配置</button><span class="tiny">已预填你的免费 Supabase 项目</span>
-        <button class="btn ghost" id="testCloudConfig">测试连接</button>
-        <span class="tiny" id="cloudConfigMsg"></span>
-      </div>
+      </details>
 
       <div class="divider"></div>
 
@@ -746,7 +752,7 @@ main{
         </div>
         <div>
           <label>密码</label>
-          <input id="cloudPassword" type="password" autocomplete="current-password" placeholder="至少 6 位">
+          <input id="cloudPassword" type="password" autocomplete="current-password" placeholder="至少 8 位">
         </div>
       </div>
 
@@ -763,9 +769,11 @@ main{
         <button class="btn primary" id="cloudPull">从云端恢复到本机</button>
         <button class="btn secondary" id="cloudPush">上传本机进度到云端</button>
         <button class="btn ghost" id="cloudSyncAudio">同步本机录音到云端</button>
+        <button class="btn ghost" id="cloudRestorePrevious">恢复上一个云端版本</button>
+        <button class="btn ghost" id="installPwa">安装到设备</button>
       </div>
       <div class="note" style="margin-top:10px">
-        <b>自动同步：</b>登录后，每次保存学习记录 / 复习结果 / 设置时会延迟约 1 秒自动上传。另一台设备打开并登录后可以拉取最新进度。录音文件使用 Supabase Storage 免费额度；缺失录音在播放时会自动从云端下载到当前设备。
+        <b>安全自动同步：</b>保存后约 1 秒自动上传；每 30 秒及重新回到页面时会检查其他设备的新进度。若两台设备同时修改，会停止自动覆盖并提示冲突。云端自动保留最近 30 个历史版本。录音使用私有 Storage，同账号设备可自动下载。
       </div>
       <div id="cloudSyncMsg" class="tiny" style="margin-top:8px"></div>
     </div>
@@ -773,7 +781,7 @@ main{
     <div class="card s6"><h2>数据备份</h2><p class="muted">JSON 包含文字、复习、错误、盲点、归档和教师反馈。云同步登录后，文字进度会同步到 Supabase；录音会同步到私有 Storage。JSON 仍建议作为额外离线备份。</p><div class="row"><button class="btn primary" id="exportBtn">导出 JSON</button><label class="btn secondary" style="display:inline-block;margin:0">导入 JSON<input id="importInput" type="file" accept=".json" style="display:none"></label></div></div>
     <div class="card s6"><h2>兼容旧版</h2><div class="note">Final 会尝试读取 V4 本地数据并迁移。如果浏览器因为 file:// 路径不同无法共享 localStorage，也可直接导入 V4 JSON 备份。</div><button class="btn secondary" id="migrateV4">尝试迁移 V4</button></div>
     <div class="card s6"><h2>复习控制</h2><label>每天最多显示多少张到期卡</label><input id="maxReviewsSetting" type="number" min="3" max="20"><label>提醒阈值（复习债务）</label><input id="warningSetting" type="number" min="6" max="40"><button class="btn primary" id="saveSettings">保存设置</button></div>
-    <div class="card s6"><h2>重置</h2><div class="warn">建议先导出 JSON。</div><button class="btn danger" id="resetBtn" style="margin-top:9px">恢复 Final 初始状态</button></div>
+    <div class="card s6"><h2>重置</h2><div class="warn">重置前会自动下载一份本机 JSON 备份；登录云同步时，旧云端版本也会保留在历史记录中。</div><button class="btn danger" id="resetBtn" style="margin-top:9px">清空并恢复初始状态</button></div>
   </div>
 </section>
 </main>
@@ -781,19 +789,21 @@ main{
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const INITIAL_STATE = {"version": 5, "settings": {"dailyMinutes": 45, "maxReviews": 8, "targetWpmLow": 135, "targetWpmHigh": 150, "reviewLimitWarning": 12}, "streak": {"count": 1, "lastDate": "2026-09-22"}, "records": [{"id": "own_0922", "type": "own", "date": "2026-09-22", "title": "New approach to learning English", "tags": ["学习方法", "个人表达"], "zh": "我今天想根据新的英语学习方法尝试一下，每天写一小段中文然后转换成英语，再用AI把英语转成语音，我根据此语音反复的琢磨重复，直到我能流畅地清晰地准确的背诵出来。", "en": "Today, I'd like to try a new approach to learning English: I'll write a short passage in Chinese every day, translate it into English, then use AI to convert the text into speech. I'll listen to the recording repeatedly, practicing until I can recite it fluently, clearly, and accurately.", "teacherEn": "Today, I'd like to try a new way of learning English. Every day, I'll write a short passage in Chinese, turn it into natural English, and use AI to generate an audio version. Then I'll listen to it over and over and practice until I can say the whole thing smoothly, clearly, and accurately without looking at the text.", "retell": "", "chunks": ["I'd like to try...", "a new approach to doing", "practice until I can..."], "wpm": 120, "referenceAsset": "assets/self_reference.mp3", "recordingAssets": ["assets/self_take_1.m4a", "assets/self_take_2.m4a"], "teacherNote": "优先问题：整体节奏偏逐词读。短期目标 135–150 WPM，不追参考音 179 WPM；先把意群、重音、弱读做出来。", "createdAt": "2026-09-22T23:59:00"}, {"id": "elllo_001", "type": "elllo", "date": "2026-09-22", "title": "001 - Keri Omelet", "tags": ["ELLLO", "B1", "自然交流"], "url": "", "pct": null, "hard": "", "blind": ["contractions"], "chunks": ["I've never ... before.", "keep doing that until...", "What ... do you recommend?", "give that a try"], "retell": "", "referenceAsset": "assets/elllo_001_kerri_omelet.mp3", "transcriptAsset": "assets/elllo_001_transcript.txt", "teacherNote": "重点不是厨房词汇本身，而是步骤说明、给建议、until、have to、自然弱读与缩略形式。", "createdAt": "2026-09-22T23:59:10"}, {"id": "summary_0922", "type": "daily", "date": "2026-09-22", "title": "9/22 Daily Summary", "tags": ["每日总结"], "summary": "完成：自己的英语 + 2 次录音 + ELLLO 001。下一步：先把 9/22 主动语块做成次日提取卡；录音训练优先修节奏，不追求参考音语速。", "createdAt": "2026-09-22T23:59:20"}], "reviewCards": [{"id": "rv1", "type": "phrase", "source": "My English 9/22", "front": "我想尝试一种新的方法。", "answer": "I'd like to try a new approach.", "focus": "I'd like to try...", "variant": "我想尝试一种更简单的英语学习方法。", "variantAnswer": "I'd like to try a simpler approach to learning English.", "question": "What would you like to try differently this week?", "due": "2026-09-23", "interval": 0, "ease": 2.5, "priority": 1, "mastery": "Recall", "reps": 0, "lapses": 0}, {"id": "rv2", "type": "phrase", "source": "My English 9/22", "front": "一种新的英语学习方法", "answer": "a new approach to learning English", "focus": "approach to + V-ing", "variant": "一种新的培训新员工的方法", "variantAnswer": "a new approach to training new staff", "question": "What's one approach to learning English that works for you?", "due": "2026-09-23", "interval": 0, "ease": 2.5, "priority": 1, "mastery": "Recall", "reps": 0, "lapses": 0}, {"id": "rv3", "type": "phrase", "source": "My English 9/22", "front": "一直练到我能够流畅地说出来。", "answer": "Practice until I can say it fluently.", "focus": "practice until I can...", "variant": "一直练到我能够不看文本复述出来。", "variantAnswer": "Practice until I can retell it without looking at the text.", "question": "How long do you usually practice until something feels natural?", "due": "2026-09-23", "interval": 0, "ease": 2.5, "priority": 1, "mastery": "Recall", "reps": 0, "lapses": 0}, {"id": "rv4", "type": "listening", "source": "ELLLO 001", "front": "我以前从来没做过这个。", "answer": "I've never made one before.", "focus": "I've never ... before.", "variant": "我以前从来没用过这个工具。", "variantAnswer": "I've never used this tool before.", "question": "What's something you've never done before but want to try?", "due": "2026-09-23", "interval": 0, "ease": 2.5, "priority": 1, "mastery": "Recall", "reps": 0, "lapses": 0}, {"id": "rv5", "type": "phrase", "source": "ELLLO 001", "front": "一直这样做，直到大部分鸡蛋熟了。", "answer": "Keep doing that until most of the egg is cooked.", "focus": "keep doing that until...", "variant": "一直测试，直到结果稳定。", "variantAnswer": "Keep testing it until the results are stable.", "question": "Can you explain one process using 'keep ... until ...'?", "due": "2026-09-23", "interval": 0, "ease": 2.5, "priority": 2, "mastery": "Recall", "reps": 0, "lapses": 0}, {"id": "rv6", "type": "phrase", "source": "ELLLO 001", "front": "你推荐什么馅料？", "answer": "What fillings do you recommend?", "focus": "What ... do you recommend?", "variant": "你推荐哪个模型？", "variantAnswer": "Which model do you recommend?", "question": "What English-learning resource do you recommend to a B1 learner?", "due": "2026-09-23", "interval": 0, "ease": 2.5, "priority": 1, "mastery": "Recall", "reps": 0, "lapses": 0}, {"id": "rv7", "type": "phrase", "source": "ELLLO 001", "front": "我得试试看。", "answer": "I'll have to give that a try.", "focus": "give that a try", "variant": "这个方法看起来不错，我得试试看。", "variantAnswer": "That approach looks good. I'll have to give it a try.", "question": "What's something new you'd like to give a try?", "due": "2026-09-23", "interval": 0, "ease": 2.5, "priority": 1, "mastery": "Recall", "reps": 0, "lapses": 0}, {"id": "rv8", "type": "pronunciation", "source": "Pronunciation 9/22", "front": "I'd / I'll：输出时应该怎么处理尾音？", "answer": "尾音要轻做，但不要完全吞掉。重点是把整个语块说顺，例如 I'd like... / I'll write...", "focus": "contractions + weak final consonants", "variant": "跟读 3 次：I'd like to try... / I'll write a short passage...", "variantAnswer": "", "question": "Can you say both chunks naturally without over-emphasizing the final sound?", "due": "2026-09-23", "interval": 0, "ease": 2.5, "priority": 2, "mastery": "Recall", "reps": 0, "lapses": 0}], "reviewHistory": [], "phrases": [{"text": "bend over backwards", "meaning": "竭尽全力", "example": "I'm constantly bending over backwards to make it work.", "tags": ["active", "old"], "mastery": "Recall"}, {"text": "jump to conclusions", "meaning": "贸然下结论", "example": "Let's not jump to conclusions.", "tags": ["active", "old"], "mastery": "Recall"}, {"text": "give someone the benefit of the doubt", "meaning": "在证据不足时先选择相信", "example": "Give him the benefit of the doubt for now.", "tags": ["active", "old"], "mastery": "Recall"}, {"text": "pull it off", "meaning": "成功搞定难事", "example": "How did you pull it off?", "tags": ["active", "old"], "mastery": "Recall"}, {"text": "end up doing", "meaning": "最后结果做了……", "example": "I ended up staying up late.", "tags": ["active", "old"], "mastery": "Recall"}, {"text": "figure out", "meaning": "弄明白；解决", "example": "I'm trying to figure out what went wrong.", "tags": ["active", "old"], "mastery": "Recall"}, {"text": "I'd like to try...", "meaning": "我想尝试……", "example": "I'd like to try a new approach.", "tags": ["active", "9/22"], "mastery": "Recall"}, {"text": "a new approach to doing", "meaning": "一种做某事的新方法", "example": "a new approach to learning English", "tags": ["active", "9/22"], "mastery": "Recall"}, {"text": "practice until I can...", "meaning": "一直练到我能够……", "example": "Practice until I can say it fluently.", "tags": ["active", "9/22"], "mastery": "Recall"}, {"text": "I've never ... before.", "meaning": "我以前从没……过", "example": "I've never made one before.", "tags": ["active", "ELLLO001"], "mastery": "Recall"}, {"text": "keep doing that until...", "meaning": "一直这样做，直到……", "example": "Keep doing that until most of the egg is cooked.", "tags": ["active", "ELLLO001"], "mastery": "Recall"}, {"text": "What ... do you recommend?", "meaning": "你推荐什么……？", "example": "What fillings do you recommend?", "tags": ["active", "ELLLO001"], "mastery": "Recall"}, {"text": "give that a try", "meaning": "试试看", "example": "I'll have to give that a try.", "tags": ["active", "ELLLO001"], "mastery": "Recall"}], "errors": [{"id": "err_do_are", "category": "grammar", "item": "Do you ...? vs Are you ...?", "count": 1, "last": "2026-09-22", "status": "watch", "note": "Are you + adjective/noun/place/V-ing; Do you + base verb."}, {"id": "err_to_ing", "category": "grammar", "item": "to do vs preposition + V-ing", "count": 1, "last": "2026-09-22", "status": "watch", "note": "输出时优先记语块：would like to do / approach to doing。"}, {"id": "err_contraction", "category": "pronunciation", "item": "I'd / you'll 等缩略形式尾音", "count": 1, "last": "2026-09-22", "status": "watch", "note": "尾音轻做，不要完全吞；听力按整个语块识别。"}], "blindspots": [{"id": "bs_contractions", "category": "contractions", "label": "缩略形式（I'd / I'll / you'll 等）", "count": 1, "last": "2026-09-22"}, {"id": "bs_weakforms", "category": "weak_forms", "label": "弱读 / 功能词", "count": 0, "last": null}, {"id": "bs_linking", "category": "linking", "label": "连读 / 辅音连接", "count": 0, "last": null}, {"id": "bs_endings", "category": "endings", "label": "词尾辅音 / -ed / -s", "count": 0, "last": null}, {"id": "bs_stress", "category": "stress", "label": "词重音 / 句重音", "count": 0, "last": null}, {"id": "bs_vocab", "category": "unknown_vocab", "label": "生词导致没听懂", "count": 0, "last": null}], "drafts": {"own": {"date": "2026-09-23", "zh": "", "en": "", "chunks": "", "cues": "", "retell": "", "tags": ""}, "elllo": {"date": "2026-09-23", "title": "", "url": "", "pct": 60, "hard": "", "chunks": "", "cues": "", "retell": "", "blind": []}}, "teacherFeedback": []};
+const INITIAL_STATE = {"version":5,"settings":{"dailyMinutes":45,"maxReviews":8,"targetWpmLow":135,"targetWpmHigh":150,"reviewLimitWarning":12},"streak":{"count":0,"lastDate":null},"records":[],"reviewCards":[],"reviewHistory":[],"phrases":[],"errors":[],"blindspots":[{"id":"bs_contractions","category":"contractions","label":"缩略形式（I'd / I'll / you'll 等）","count":0,"last":null},{"id":"bs_weakforms","category":"weak_forms","label":"弱读 / 功能词","count":0,"last":null},{"id":"bs_linking","category":"linking","label":"连读 / 辅音连接","count":0,"last":null},{"id":"bs_endings","category":"endings","label":"词尾辅音 / -ed / -s","count":0,"last":null},{"id":"bs_stress","category":"stress","label":"词重音 / 句重音","count":0,"last":null},{"id":"bs_vocab","category":"unknown_vocab","label":"生词导致没听懂","count":0,"last":null}],"drafts":{"own":{"date":"","zh":"","en":"","chunks":"","cues":"","retell":"","tags":""},"elllo":{"date":"","title":"","url":"","pct":60,"hard":"","chunks":"","cues":"","retell":"","blind":[]}},"teacherFeedback":[]};
+;
 const KEY='myEnglishLabFinalV5', V4KEY='myEnglishLabV4';
 const DB='EnglishLabFinalAudio', STORE='audio';
-const today=()=>new Date().toISOString().slice(0,10);
+function localDateString(d=new Date()){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return `${y}-${m}-${day}`}
+const today=()=>localDateString(new Date());
 const clone=x=>JSON.parse(JSON.stringify(x));
 let state=(()=>{try{const x=JSON.parse(localStorage.getItem(KEY));return x&&x.version===5?x:clone(INITIAL_STATE)}catch(e){return clone(INITIAL_STATE)}})();
 let db=null, mediaRecorder=null, mediaChunks=[], currentSentenceIndex=null, sessionDone=0;
 window.sentences=[]; window.sentenceRefId=null; window.wholeRecId=null;
 
 function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function addDays(date,n){let d=new Date(date+'T00:00:00');d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)}
+function addDays(date,n){const [y,m,d0]=date.split('-').map(Number);let d=new Date(y,m-1,d0);d.setDate(d.getDate()+n);return localDateString(d)}
 function maxDate(a,b){return a>b?a:b}
-function save(){localStorage.setItem(KEY,JSON.stringify(state));renderAll();scheduleCloudPush()}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));markLocalDirty();renderAll();scheduleCloudPush()}
 function goPage(id){document.querySelectorAll('main section').forEach(s=>s.classList.toggle('hidden',s.id!==id));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));if(id==='archive')renderArchive();if(id==='weekly')renderWeekly()}
 window.goPage=goPage;document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>goPage(b.dataset.page));
 document.getElementById('todayText').textContent=new Date().toLocaleDateString('zh-CN',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
@@ -803,7 +813,7 @@ async function putAudio(blob,name){if(!db)await openDB();let id='aud_'+Date.now(
 async function getLocalAudio(id){if(!id)return null;if(!db)await openDB();return new Promise((resolve,reject)=>{let r=db.transaction(STORE,'readonly').objectStore(STORE).get(id);r.onsuccess=()=>resolve(r.result||null);r.onerror=()=>reject(r.error)})}
 async function getAudio(id){if(!id)return null;let local=await getLocalAudio(id);if(local)return local;let remote=await downloadAudioFromCloud(id);if(remote){if(!db)await openDB();await new Promise((resolve,reject)=>{let tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).put(remote);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)});return remote}return null}
 async function previewStored(id,boxId){let x=await getAudio(id);if(!x)return;let u=URL.createObjectURL(x.blob);document.getElementById(boxId).innerHTML=`<div class="aud"><audio controls src="${u}"></audio><div class="tiny">${esc(x.name)}</div></div>`}
-function assetAudio(path,label='音频'){return path?`<div class="aud"><b>${esc(label)}</b><audio controls src="${esc(path)}"></audio></div>`:''}
+function assetAudio(path,label='音频'){if(!path)return '';if(String(path).startsWith('assets/'))return '<div class="warn">旧版本地音频未上传到云端，已跳过失效引用。</div>';return `<div class="aud"><b>${esc(label)}</b><audio controls src="${esc(path)}"></audio></div>`}
 
 function initDates(){
   for(let id of ['ownDate','ellloDate','sentenceDate'])document.getElementById(id).value=today();
@@ -815,11 +825,11 @@ function loadDrafts(){
   [...document.querySelectorAll('#blindChecks input')].forEach(x=>x.checked=(e.blind||[]).includes(x.value))
 }
 function bindDrafts(){
-  ['ownDate','ownZh','ownEn','ownChunks','ownCues','ownRetell','ownTags'].forEach(id=>document.getElementById(id).addEventListener('input',()=>{state.drafts.own={date:document.getElementById('ownDate').value,zh:document.getElementById('ownZh').value,en:document.getElementById('ownEn').value,chunks:document.getElementById('ownChunks').value,cues:document.getElementById('ownCues').value,retell:document.getElementById('ownRetell').value,tags:document.getElementById('ownTags').value};localStorage.setItem(KEY,JSON.stringify(state))}));
+  ['ownDate','ownZh','ownEn','ownChunks','ownCues','ownRetell','ownTags'].forEach(id=>document.getElementById(id).addEventListener('input',()=>{state.drafts.own={date:document.getElementById('ownDate').value,zh:document.getElementById('ownZh').value,en:document.getElementById('ownEn').value,chunks:document.getElementById('ownChunks').value,cues:document.getElementById('ownCues').value,retell:document.getElementById('ownRetell').value,tags:document.getElementById('ownTags').value};localStorage.setItem(KEY,JSON.stringify(state));markLocalDirty();scheduleCloudPush()}));
   ['ellloDate','ellloTitle','ellloUrl','ellloPct','ellloHard','ellloChunks','ellloCues','ellloRetell'].forEach(id=>document.getElementById(id).addEventListener('input',saveEllloDraft));
   document.querySelectorAll('#blindChecks input').forEach(x=>x.addEventListener('change',saveEllloDraft))
 }
-function saveEllloDraft(){state.drafts.elllo={date:document.getElementById('ellloDate').value,title:document.getElementById('ellloTitle').value,url:document.getElementById('ellloUrl').value,pct:+document.getElementById('ellloPct').value,hard:document.getElementById('ellloHard').value,chunks:document.getElementById('ellloChunks').value,cues:document.getElementById('ellloCues').value,retell:document.getElementById('ellloRetell').value,blind:[...document.querySelectorAll('#blindChecks input:checked')].map(x=>x.value)};localStorage.setItem(KEY,JSON.stringify(state))}
+function saveEllloDraft(){state.drafts.elllo={date:document.getElementById('ellloDate').value,title:document.getElementById('ellloTitle').value,url:document.getElementById('ellloUrl').value,pct:+document.getElementById('ellloPct').value,hard:document.getElementById('ellloHard').value,chunks:document.getElementById('ellloChunks').value,cues:document.getElementById('ellloCues').value,retell:document.getElementById('ellloRetell').value,blind:[...document.querySelectorAll('#blindChecks input:checked')].map(x=>x.value)};localStorage.setItem(KEY,JSON.stringify(state));markLocalDirty();scheduleCloudPush()}
 
 function dueCards(date=today(),filter='all'){return state.reviewCards.filter(c=>(!c.due||c.due<=date)&&(filter==='all'||c.type===filter)).sort((a,b)=>(a.priority||2)-(b.priority||2))}
 function typeSchedule(type,rating,iv=0,ease=2.5){
@@ -997,161 +1007,53 @@ function migrateV4(){
 document.getElementById('migrateV4').onclick=migrateV4;
 
 
-// ===== Preconfigured free cloud endpoint =====
-(function(){
-  const k='myEnglishLabCloudConfigV1';
-  if(!localStorage.getItem(k)){
-    localStorage.setItem(k, JSON.stringify({
-      url:"https://zbcucfzhngvpikzjdfhg.supabase.co",
-      key:"sb_publishable_5OYuh_WEaPnw_2aMfbaHog_ryMU4kJj"
-    }));
-  }
-})();
-
-// ===== FREE CLOUD SYNC: Supabase snapshot + private audio storage =====
-const CLOUD_CFG_KEY='myEnglishLabCloudConfigV1';
-const CLOUD_SYNC_TS_KEY='myEnglishLabCloudLastSyncV1';
-let cloudClient=null, cloudUser=null, cloudPushTimer=null, cloudApplying=false;
-
-function cloudMsg(msg,ok=true){
-  const el=document.getElementById('cloudSyncMsg'); if(el) el.textContent=msg||'';
-  const badge=document.getElementById('cloudStatusBadge');
-  if(badge){badge.textContent=cloudUser?'已登录 / 自动同步':(cloudClient?'已配置':'未配置');badge.className='module-badge';}
-}
-function loadCloudConfig(){
-  try{return JSON.parse(localStorage.getItem(CLOUD_CFG_KEY)||'{}')}catch(_){return {}}
-}
-function saveCloudConfig(){
-  const cfg={url:(document.getElementById('cloudUrl')?.value||'').trim(),key:(document.getElementById('cloudAnonKey')?.value||'').trim()};
-  localStorage.setItem(CLOUD_CFG_KEY,JSON.stringify(cfg)); initCloudClient(); return cfg;
-}
-async function initCloudClient(){
-  const cfg=loadCloudConfig();
-  if(document.getElementById('cloudUrl'))document.getElementById('cloudUrl').value=cfg.url||'';
-  if(document.getElementById('cloudAnonKey'))document.getElementById('cloudAnonKey').value=cfg.key||'';
-  if(!cfg.url||!cfg.key||!window.supabase){cloudClient=null;cloudUser=null;cloudMsg('请先填写 Supabase URL 和 Anon Key。');return false}
-  try{
-    cloudClient=window.supabase.createClient(cfg.url,cfg.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
-    const {data}=await cloudClient.auth.getSession(); cloudUser=data?.session?.user||null;
-    updateCloudUserUI();
-    cloudClient.auth.onAuthStateChange((_event,session)=>{cloudUser=session?.user||null;updateCloudUserUI(); if(cloudUser) smartCloudStartup()});
-    if(cloudUser) await smartCloudStartup();
-    return true;
-  }catch(e){cloudClient=null;cloudUser=null;cloudMsg('云端初始化失败：'+(e?.message||e));return false}
-}
-function updateCloudUserUI(){
-  const t=document.getElementById('cloudUserText');if(t)t.textContent=cloudUser?`已登录：${cloudUser.email||cloudUser.id}`:'未登录';
-  cloudMsg(cloudUser?'云同步已就绪。':'已配置 Supabase，登录后开始同步。');
-}
-async function testCloud(){
-  if(!cloudClient) await initCloudClient();
-  if(!cloudClient) return;
-  try{
-    const {error}=await cloudClient.from('app_snapshots').select('updated_at').limit(1);
-    if(error)throw error;
-    document.getElementById('cloudConfigMsg').textContent='连接成功 ✓';
-  }catch(e){document.getElementById('cloudConfigMsg').textContent='连接失败：'+(e?.message||e)}
-}
-async function cloudSignUp(){
-  saveCloudConfig(); if(!cloudClient)return;
-  const email=document.getElementById('cloudEmail').value.trim(),password=document.getElementById('cloudPassword').value;
-  if(!email||password.length<6)return alert('请输入邮箱，并设置至少 6 位密码。');
-  const {data,error}=await cloudClient.auth.signUp({email,password});
-  if(error)return alert('注册失败：'+error.message);
-  cloudUser=data?.user||null; updateCloudUserUI();
-  alert(data?.session?'注册并登录成功。':'注册成功。若 Supabase 开启邮箱验证，请先去邮箱点确认链接，再回来登录。');
-}
-async function cloudLogin(){
-  saveCloudConfig(); if(!cloudClient)return;
-  const email=document.getElementById('cloudEmail').value.trim(),password=document.getElementById('cloudPassword').value;
-  const {data,error}=await cloudClient.auth.signInWithPassword({email,password});
-  if(error)return alert('登录失败：'+error.message);
-  cloudUser=data?.user||null; updateCloudUserUI(); await smartCloudStartup();
-}
-async function cloudLogout(){
-  if(cloudClient)await cloudClient.auth.signOut();cloudUser=null;updateCloudUserUI();
-}
-async function pushCloudState(showAlert=false){
-  if(cloudApplying||!cloudClient||!cloudUser)return false;
-  try{
-    const now=new Date().toISOString();
-    const payload={user_id:cloudUser.id,state:state,updated_at:now};
-    const {error}=await cloudClient.from('app_snapshots').upsert(payload,{onConflict:'user_id'});
-    if(error)throw error;
-    localStorage.setItem(CLOUD_SYNC_TS_KEY,now);cloudMsg('已同步到云端：'+new Date().toLocaleTimeString());
-    if(showAlert)alert('本机最新进度已上传到云端。');
-    return true;
-  }catch(e){cloudMsg('自动同步失败：'+(e?.message||e),false);if(showAlert)alert('上传失败：'+(e?.message||e));return false}
-}
-function scheduleCloudPush(){
-  if(cloudApplying||!cloudClient||!cloudUser)return;
-  clearTimeout(cloudPushTimer);cloudPushTimer=setTimeout(()=>pushCloudState(false),1100);
-}
-async function fetchCloudSnapshot(){
-  if(!cloudClient||!cloudUser)return null;
-  const {data,error}=await cloudClient.from('app_snapshots').select('state,updated_at').eq('user_id',cloudUser.id).maybeSingle();
-  if(error)throw error;return data||null;
-}
-async function pullCloudState(showAlert=false){
-  if(!cloudClient||!cloudUser)return alert('请先登录云同步账号。');
-  try{
-    const remote=await fetchCloudSnapshot();
-    if(!remote){await pushCloudState(false);if(showAlert)alert('云端还没有数据，已把本机当前进度作为第一份云端数据。');return}
-    if(!remote.state||remote.state.version!==5)throw new Error('云端数据版本不兼容');
-    cloudApplying=true;state=remote.state;localStorage.setItem(KEY,JSON.stringify(state));localStorage.setItem(CLOUD_SYNC_TS_KEY,remote.updated_at||new Date().toISOString());
-    cloudApplying=false;loadDrafts();renderAll();cloudMsg('已从云端恢复：'+new Date(remote.updated_at).toLocaleString());
-    if(showAlert)alert('已从云端恢复最新学习进度。');
-  }catch(e){cloudApplying=false;alert('恢复失败：'+(e?.message||e))}
-}
-async function smartCloudStartup(){
-  if(!cloudClient||!cloudUser)return;
-  try{
-    const remote=await fetchCloudSnapshot();
-    if(!remote){await pushCloudState(false);return}
-    const lastLocal=localStorage.getItem(CLOUD_SYNC_TS_KEY);
-    // First login on a device: remote wins. Afterwards compare last known sync timestamp.
-    if(!lastLocal || new Date(remote.updated_at).getTime()>new Date(lastLocal).getTime()+500){
-      cloudApplying=true;state=remote.state;localStorage.setItem(KEY,JSON.stringify(state));localStorage.setItem(CLOUD_SYNC_TS_KEY,remote.updated_at);cloudApplying=false;loadDrafts();renderAll();cloudMsg('已自动加载云端最新进度。');
-    }else{
-      cloudMsg('云端同步已连接。');
-    }
-  }catch(e){cloudMsg('云端读取失败：'+(e?.message||e),false)}
-}
-async function uploadAudioToCloud(id,blob){
-  if(!cloudClient||!cloudUser||!id||!blob)return false;
-  const path=`${cloudUser.id}/${id}`;
-  const {error}=await cloudClient.storage.from('audio').upload(path,blob,{upsert:true,contentType:blob.type||'application/octet-stream'});
-  if(error)throw error;return true;
-}
-async function downloadAudioFromCloud(id){
-  if(!cloudClient||!cloudUser||!id)return null;
-  try{
-    const path=`${cloudUser.id}/${id}`;
-    const {data,error}=await cloudClient.storage.from('audio').download(path);
-    if(error)return null;
-    return {id,blob:data,name:'云端录音 '+id,mime:data.type||'audio/webm',created:Date.now()};
-  }catch(_){return null}
-}
-async function syncAllLocalAudio(){
-  if(!cloudClient||!cloudUser)return alert('请先登录云同步账号。');
-  if(!db)await openDB();
-  const all=await new Promise((resolve,reject)=>{const r=db.transaction(STORE,'readonly').objectStore(STORE).getAll();r.onsuccess=()=>resolve(r.result||[]);r.onerror=()=>reject(r.error)});
-  let ok=0,fail=0;
-  cloudMsg(`正在同步 ${all.length} 个本机音频…`);
-  for(const x of all){try{await uploadAudioToCloud(x.id,x.blob);ok++}catch(_){fail++}}
-  cloudMsg(`音频同步完成：成功 ${ok}，失败 ${fail}。`);
-  alert(`音频同步完成：成功 ${ok}，失败 ${fail}。`);
-}
+// ===== My English Lab V1.1 safe cloud sync =====
+const DEFAULT_CLOUD_URL='https://zbcucfzhngvpikzjdfhg.supabase.co';
+const DEFAULT_CLOUD_KEY='sb_publishable_5OYuh_WEaPnw_2aMfbaHog_ryMU4kJj';
+const CLOUD_CFG_KEY='myEnglishLabCloudConfigV1',CLOUD_SYNC_TS_KEY='myEnglishLabCloudLastSyncV1',CLOUD_REV_KEY='myEnglishLabCloudRevisionV1',CLOUD_DIRTY_KEY='myEnglishLabCloudDirtyV1';
+let cloudClient=null,cloudUser=null,cloudPushTimer=null,cloudApplying=false,cloudRevision=null,cloudAuthSubscription=null,cloudCheckTimer=null,deferredInstallPrompt=null;
+let localDirty=localStorage.getItem(CLOUD_DIRTY_KEY)==='1';
+(function(){if(!localStorage.getItem(CLOUD_CFG_KEY))localStorage.setItem(CLOUD_CFG_KEY,JSON.stringify({url:DEFAULT_CLOUD_URL,key:DEFAULT_CLOUD_KEY}))})();
+function setGlobalSync(v,mode='offline'){const el=document.getElementById('globalSyncIndicator');if(el){el.textContent=v;el.className='sync-indicator '+mode}}
+function cloudMsg(msg,ok=true,mode=null){const el=document.getElementById('cloudSyncMsg');if(el)el.textContent=msg||'';const b=document.getElementById('cloudStatusBadge');if(b){b.textContent=cloudUser?'已登录 / 安全同步':(cloudClient?'已配置':'未配置');b.className='module-badge'}if(mode)setGlobalSync(msg,mode)}
+function markLocalDirty(){if(cloudApplying)return;localDirty=true;localStorage.setItem(CLOUD_DIRTY_KEY,'1');if(cloudUser)setGlobalSync('☁ 本机有未同步修改','dirty')}
+function clearLocalDirty(){localDirty=false;localStorage.removeItem(CLOUD_DIRTY_KEY)}
+function saveCloudMeta(rev,ts){cloudRevision=Number(rev)||null;if(cloudRevision)localStorage.setItem(CLOUD_REV_KEY,String(cloudRevision));else localStorage.removeItem(CLOUD_REV_KEY);if(ts)localStorage.setItem(CLOUD_SYNC_TS_KEY,ts);clearLocalDirty()}
+function loadCloudConfig(){try{return {url:DEFAULT_CLOUD_URL,key:DEFAULT_CLOUD_KEY,...JSON.parse(localStorage.getItem(CLOUD_CFG_KEY)||'{}')}}catch(_){return {url:DEFAULT_CLOUD_URL,key:DEFAULT_CLOUD_KEY}}}
+function saveCloudConfig(){const cfg={url:(document.getElementById('cloudUrl')?.value||DEFAULT_CLOUD_URL).trim(),key:(document.getElementById('cloudAnonKey')?.value||DEFAULT_CLOUD_KEY).trim()};localStorage.setItem(CLOUD_CFG_KEY,JSON.stringify(cfg));initCloudClient();return cfg}
+function sanitizeLegacyAssets(x){if(!x||!Array.isArray(x.records))return x;for(const r of x.records){if(typeof r.referenceAsset==='string'&&r.referenceAsset.startsWith('assets/'))delete r.referenceAsset;if(typeof r.transcriptAsset==='string'&&r.transcriptAsset.startsWith('assets/'))delete r.transcriptAsset;if(Array.isArray(r.recordingAssets)){r.recordingAssets=r.recordingAssets.filter(v=>!(typeof v==='string'&&v.startsWith('assets/')));if(!r.recordingAssets.length)delete r.recordingAssets}}return x}
+async function initCloudClient(){const cfg=loadCloudConfig();if(document.getElementById('cloudUrl'))document.getElementById('cloudUrl').value=cfg.url;if(document.getElementById('cloudAnonKey'))document.getElementById('cloudAnonKey').value=cfg.key;if(!cfg.url||!cfg.key||!window.supabase){cloudClient=null;cloudUser=null;setGlobalSync('☁ 云端未配置','offline');return false}try{if(cloudAuthSubscription){try{cloudAuthSubscription.unsubscribe()}catch(_){}cloudAuthSubscription=null}cloudClient=window.supabase.createClient(cfg.url,cfg.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});const {data}=await cloudClient.auth.getSession();cloudUser=data?.session?.user||null;updateCloudUserUI();const sub=cloudClient.auth.onAuthStateChange((_e,session)=>{cloudUser=session?.user||null;updateCloudUserUI();if(cloudUser){smartCloudStartup();startCloudWatch()}else stopCloudWatch()});cloudAuthSubscription=sub?.data?.subscription||null;if(cloudUser){await smartCloudStartup();startCloudWatch()}return true}catch(e){cloudClient=null;cloudUser=null;cloudMsg('云端初始化失败：'+(e?.message||e),false,'warn');return false}}
+function updateCloudUserUI(){const t=document.getElementById('cloudUserText');if(t)t.textContent=cloudUser?`已登录：${cloudUser.email||cloudUser.id}`:'未登录';if(cloudUser)setGlobalSync(localDirty?'☁ 本机有未同步修改':'☁ 云同步已连接',localDirty?'dirty':'ok');else setGlobalSync('☁ 未登录','offline');const el=document.getElementById('cloudSyncMsg');if(el)el.textContent=cloudUser?'云同步已就绪。':'已配置 Supabase，登录后开始同步。'}
+async function testCloud(){if(!cloudClient)await initCloudClient();if(!cloudClient)return;try{const {error}=await cloudClient.from('app_snapshots').select('updated_at').limit(1);if(error)throw error;document.getElementById('cloudConfigMsg').textContent='连接成功 ✓'}catch(e){document.getElementById('cloudConfigMsg').textContent='连接失败：'+(e?.message||e)}}
+async function cloudSignUp(){saveCloudConfig();if(!cloudClient)return;const email=document.getElementById('cloudEmail').value.trim(),password=document.getElementById('cloudPassword').value;if(!email||password.length<8)return alert('请输入邮箱，并设置至少 8 位密码。');const {data,error}=await cloudClient.auth.signUp({email,password});if(error)return alert('注册失败：'+error.message);cloudUser=data?.user||null;updateCloudUserUI();alert(data?.session?'注册并登录成功。':'注册成功。若收到验证邮件，请先点确认链接，再回来登录。')}
+async function cloudLogin(){saveCloudConfig();if(!cloudClient)return;const email=document.getElementById('cloudEmail').value.trim(),password=document.getElementById('cloudPassword').value;const {data,error}=await cloudClient.auth.signInWithPassword({email,password});if(error)return alert('登录失败：'+error.message);cloudUser=data?.user||null;updateCloudUserUI();await smartCloudStartup();startCloudWatch()}
+async function cloudLogout(){if(cloudClient)await cloudClient.auth.signOut();cloudUser=null;stopCloudWatch();updateCloudUserUI()}
+async function fetchCloudSnapshot(){if(!cloudClient||!cloudUser)return null;const {data,error}=await cloudClient.from('app_snapshots').select('state,updated_at,revision').eq('user_id',cloudUser.id).maybeSingle();if(error)throw error;return data||null}
+function applyRemoteSnapshot(remote,msg='已加载云端最新进度。'){if(!remote?.state||remote.state.version!==5)throw new Error('云端数据版本不兼容');cloudApplying=true;state=sanitizeLegacyAssets(clone(remote.state));localStorage.setItem(KEY,JSON.stringify(state));saveCloudMeta(remote.revision,remote.updated_at||new Date().toISOString());cloudApplying=false;loadDrafts();renderAll();cloudMsg(msg,true,'ok')}
+function showConflict(remote){const t=remote?.updated_at?new Date(remote.updated_at).toLocaleString():'未知时间';cloudMsg('⚠ 发现其他设备的新修改（'+t+'），已停止自动覆盖。请先“从云端恢复”，或手动上传本机版本。',false,'warn')}
+async function pushCloudState(showAlert=false,force=false){if(cloudApplying||!cloudClient||!cloudUser)return false;try{setGlobalSync('☁ 正在同步…','busy');const now=new Date().toISOString(),remote=await fetchCloudSnapshot();if(!remote){const {data,error}=await cloudClient.from('app_snapshots').insert({user_id:cloudUser.id,state:sanitizeLegacyAssets(clone(state)),updated_at:now,revision:1}).select('revision,updated_at').single();if(error)throw error;saveCloudMeta(data.revision,data.updated_at);cloudMsg('☁ 已同步 '+new Date().toLocaleTimeString(),true,'ok');if(showAlert)alert('本机最新进度已上传到云端。');return true}const known=cloudRevision||Number(localStorage.getItem(CLOUD_REV_KEY)||0)||remote.revision;if(remote.revision!==known){if(!force){showConflict(remote);return false}if(showAlert&&!confirm('云端有其他设备的新修改。继续上传本机版本会覆盖当前云端版本，但旧云端版本会保留在历史记录中。继续吗？')){showConflict(remote);return false}cloudRevision=remote.revision}const expected=cloudRevision||remote.revision,next=expected+1;const {data,error}=await cloudClient.from('app_snapshots').update({state:sanitizeLegacyAssets(clone(state)),updated_at:now,revision:next}).eq('user_id',cloudUser.id).eq('revision',expected).select('revision,updated_at').maybeSingle();if(error)throw error;if(!data){showConflict(await fetchCloudSnapshot());return false}state=sanitizeLegacyAssets(state);localStorage.setItem(KEY,JSON.stringify(state));saveCloudMeta(data.revision,data.updated_at);cloudMsg('☁ 已同步 '+new Date().toLocaleTimeString(),true,'ok');if(showAlert)alert('本机最新进度已上传到云端。');return true}catch(e){cloudMsg('⚠ 自动同步失败：'+(e?.message||e),false,'warn');if(showAlert)alert('上传失败：'+(e?.message||e));return false}}
+function scheduleCloudPush(){if(cloudApplying||!cloudClient||!cloudUser)return;clearTimeout(cloudPushTimer);cloudPushTimer=setTimeout(()=>pushCloudState(false,false),1100)}
+async function pullCloudState(showAlert=false){if(!cloudClient||!cloudUser)return alert('请先登录云同步账号。');try{if(localDirty&&showAlert&&!confirm('本机有尚未同步的修改。从云端恢复会用云端版本覆盖本机。继续吗？'))return;const remote=await fetchCloudSnapshot();if(!remote){await pushCloudState(false,false);if(showAlert)alert('云端还没有数据，已把本机当前进度作为第一份云端数据。');return}applyRemoteSnapshot(remote,'☁ 已从云端恢复 '+new Date(remote.updated_at).toLocaleTimeString());if(showAlert)alert('已从云端恢复最新学习进度。')}catch(e){cloudApplying=false;alert('恢复失败：'+(e?.message||e))}}
+async function smartCloudStartup(){if(!cloudClient||!cloudUser)return;try{const remote=await fetchCloudSnapshot();if(!remote){await pushCloudState(false,false);return}const known=Number(localStorage.getItem(CLOUD_REV_KEY)||0),last=localStorage.getItem(CLOUD_SYNC_TS_KEY);cloudRevision=known||null;if(!known||!last){applyRemoteSnapshot(remote,'☁ 已加载云端最新进度');return}if(remote.revision>known){if(localDirty)showConflict(remote);else applyRemoteSnapshot(remote,'☁ 已同步其他设备的新进度')}else cloudMsg(localDirty?'☁ 本机有未同步修改':'☁ 云同步已连接',true,localDirty?'dirty':'ok')}catch(e){cloudMsg('⚠ 云端读取失败：'+(e?.message||e),false,'warn')}}
+async function checkCloudForUpdates(){if(!cloudClient||!cloudUser||cloudApplying)return;try{const remote=await fetchCloudSnapshot();if(!remote)return;const known=cloudRevision||Number(localStorage.getItem(CLOUD_REV_KEY)||0)||0;if(remote.revision>known){if(localDirty)showConflict(remote);else applyRemoteSnapshot(remote,'☁ 已同步其他设备 '+new Date(remote.updated_at).toLocaleTimeString())}}catch(_){}}
+function startCloudWatch(){stopCloudWatch();cloudCheckTimer=setInterval(checkCloudForUpdates,30000)}function stopCloudWatch(){if(cloudCheckTimer){clearInterval(cloudCheckTimer);cloudCheckTimer=null}}
+async function restorePreviousCloudVersion(){if(!cloudClient||!cloudUser)return alert('请先登录云同步账号。');try{const {data,error}=await cloudClient.from('snapshot_history').select('state,revision,archived_at').eq('user_id',cloudUser.id).order('archived_at',{ascending:false}).limit(1).maybeSingle();if(error)throw error;if(!data)return alert('目前还没有可恢复的历史版本。');if(!confirm('恢复到 '+new Date(data.archived_at).toLocaleString()+' 的上一个云端版本？当前云端版本也会自动进入历史记录。'))return;state=sanitizeLegacyAssets(clone(data.state));localStorage.setItem(KEY,JSON.stringify(state));markLocalDirty();loadDrafts();renderAll();await pushCloudState(true,true)}catch(e){alert('恢复历史版本失败：'+(e?.message||e))}}
+async function uploadAudioToCloud(id,blob){if(!cloudClient||!cloudUser||!id||!blob)return false;const path=`${cloudUser.id}/${id}`;const {error}=await cloudClient.storage.from('audio').upload(path,blob,{upsert:true,contentType:blob.type||'application/octet-stream'});if(error)throw error;return true}
+async function downloadAudioFromCloud(id){if(!cloudClient||!cloudUser||!id)return null;try{const path=`${cloudUser.id}/${id}`,{data,error}=await cloudClient.storage.from('audio').download(path);if(error)return null;return {id,blob:data,name:'云端录音 '+id,mime:data.type||'audio/webm',created:Date.now()}}catch(_){return null}}
+async function syncAllLocalAudio(){if(!cloudClient||!cloudUser)return alert('请先登录云同步账号。');if(!db)await openDB();const all=await new Promise((resolve,reject)=>{const r=db.transaction(STORE,'readonly').objectStore(STORE).getAll();r.onsuccess=()=>resolve(r.result||[]);r.onerror=()=>reject(r.error)});let ok=0,fail=0;cloudMsg(`☁ 正在同步 ${all.length} 个本机音频…`,true,'busy');for(const x of all){try{await uploadAudioToCloud(x.id,x.blob);ok++}catch(_){fail++}}cloudMsg(`音频同步完成：成功 ${ok}，失败 ${fail}。`,fail===0,fail?'warn':'ok');alert(`音频同步完成：成功 ${ok}，失败 ${fail}。`)}
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e});async function installPwa(){if(deferredInstallPrompt){deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null}else alert('如果浏览器没有弹出安装窗口，请使用浏览器菜单里的“安装应用”或“添加到主屏幕”。')}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')checkCloudForUpdates()});window.addEventListener('focus',checkCloudForUpdates);
 
 document.getElementById('maxReviewsSetting').value=state.settings.maxReviews;document.getElementById('warningSetting').value=state.settings.reviewLimitWarning;
 document.getElementById('saveSettings').onclick=()=>{state.settings.maxReviews=+document.getElementById('maxReviewsSetting').value||8;state.settings.reviewLimitWarning=+document.getElementById('warningSetting').value||12;save();alert('设置已保存。')};
-document.getElementById('exportBtn').onclick=()=>{let b=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='my_english_lab_final_'+today()+'.json';a.click();URL.revokeObjectURL(u)};
+function downloadStateBackup(prefix='my_english_lab'){let b=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=prefix+'_'+today()+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}
+document.getElementById('exportBtn').onclick=()=>downloadStateBackup('my_english_lab_backup');
 document.getElementById('importInput').onchange=e=>{let f=e.target.files?.[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(x.version===4){x.version=5;x.drafts=x.drafts||clone(INITIAL_STATE.drafts);x.settings={...clone(INITIAL_STATE.settings),...(x.settings||{})}}if(x.version!==5)throw 0;state=x;save();loadDrafts();alert('导入完成')}catch(_){alert('不是有效的 Final/V4 备份')}};r.readAsText(f)};
-document.getElementById('resetBtn').onclick=()=>{if(confirm('恢复 Final 初始状态？')){state=clone(INITIAL_STATE);save();loadDrafts()}};
+document.getElementById('resetBtn').onclick=async()=>{if(!confirm('确定要清空当前学习数据吗？系统会先自动下载一份 JSON 备份。'))return;if(!confirm('再次确认：清空后，本机当前内容会被重置。若已登录云同步，旧云端版本仍会保留在历史记录中。'))return;downloadStateBackup('my_english_lab_before_reset');state=clone(INITIAL_STATE);localStorage.setItem(KEY,JSON.stringify(state));markLocalDirty();loadDrafts();renderAll();if(cloudUser)await pushCloudState(true,true)};
 
 function renderStats(){
   let due=dueCards().length,rev=state.reviewHistory.filter(x=>x.date===today()).length,tomorrow=state.reviewCards.filter(c=>c.due===addDays(today(),1)).length,active=state.phrases.filter(x=>x.tags?.includes('active')).length,errors=state.errors.filter(x=>x.status!=='resolved').length;
-  document.getElementById('statDue').textContent=due;document.getElementById('statReviewed').textContent=rev;document.getElementById('statTomorrow').textContent=tomorrow;document.getElementById('statActive').textContent=active;document.getElementById('statErrors').textContent=errors;document.getElementById('statArchive').textContent=state.records.length;document.getElementById('streakPill').textContent=`连续学习 ${state.streak.count||1} 天`;
+  document.getElementById('statDue').textContent=due;document.getElementById('statReviewed').textContent=rev;document.getElementById('statTomorrow').textContent=tomorrow;document.getElementById('statActive').textContent=active;document.getElementById('statErrors').textContent=errors;document.getElementById('statArchive').textContent=state.records.length;document.getElementById('streakPill').textContent=`连续学习 ${state.streak.count||0} 天`;
   if(due>(state.settings.reviewLimitWarning||12))document.getElementById('todayFocus').textContent=`当前复习债务 ${due} 张，今天不要新增太多新语块，先清理旧卡。`
 }
 function renderAll(){renderStats();renderFlow();renderReview();renderErrors();renderPhrases();renderCalendar();if(!document.getElementById('archive').classList.contains('hidden'))renderArchive();if(!document.getElementById('weekly').classList.contains('hidden'))renderWeekly()}
@@ -1163,9 +1065,11 @@ document.getElementById('cloudSignup').onclick=cloudSignUp;
 document.getElementById('cloudLogin').onclick=cloudLogin;
 document.getElementById('cloudLogout').onclick=cloudLogout;
 document.getElementById('cloudPull').onclick=()=>pullCloudState(true);
-document.getElementById('cloudPush').onclick=()=>pushCloudState(true);
+document.getElementById('cloudPush').onclick=()=>pushCloudState(true,true);
 document.getElementById('cloudSyncAudio').onclick=syncAllLocalAudio;
+document.getElementById('cloudRestorePrevious').onclick=restorePreviousCloudVersion;
+document.getElementById('installPwa').onclick=installPwa;
 
-(async()=>{try{await openDB()}catch(e){}initDates();loadDrafts();bindDrafts();renderAll();await initCloudClient()})();
+(async()=>{try{await openDB()}catch(e){}state=sanitizeLegacyAssets(state);localStorage.setItem(KEY,JSON.stringify(state));initDates();loadDrafts();bindDrafts();renderAll();if('serviceWorker' in navigator){try{await navigator.serviceWorker.register('./sw.js')}catch(_){}}await initCloudClient()})();
 </script>
 </body></html>
