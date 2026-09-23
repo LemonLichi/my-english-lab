@@ -1,0 +1,1171 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My English Lab · Final</title>
+<style>
+:root{
+  --bg:#f5f7fb;--card:#fff;--text:#162033;--muted:#667085;--line:#e4e9f0;
+  --blue:#275df5;--blue2:#183cb1;--nav:#111827;--green:#087a55;--amber:#9a6700;
+  --red:#b42318;--chip:#eef3ff;--purple:#6d4aff;--shadow:0 10px 25px rgba(31,42,84,.06);
+}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+.app{display:grid;grid-template-columns:270px 1fr;min-height:100vh}
+aside{background:var(--nav);color:#fff;padding:20px 15px;position:sticky;top:0;height:100vh;overflow:auto}
+.logo{font-size:21px;font-weight:900;margin:3px 8px}.sub{color:#9ca3af;font-size:12px;line-height:1.6;margin:6px 8px 20px}
+nav button{width:100%;border:0;background:transparent;color:#cbd5e1;padding:11px 12px;border-radius:10px;margin:3px 0;text-align:left;cursor:pointer}
+nav button.active,nav button:hover{background:#253047;color:#fff}.sidebox{border:1px solid #2f3c53;border-radius:12px;padding:11px;margin-top:18px;color:#aab4c4;font-size:12px;line-height:1.6}
+main{padding:26px;max-width:1540px;width:100%;margin:auto} h1{margin:0;font-size:28px} h2{font-size:18px;margin:0 0 8px} h3{font-size:14px;margin:0 0 8px}
+.kicker{font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:#5573d4;font-weight:900}.muted{font-size:13px;color:var(--muted);line-height:1.6}.tiny{font-size:11px;color:var(--muted)}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:18px}.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:15px}
+.s12{grid-column:span 12}.s8{grid-column:span 8}.s7{grid-column:span 7}.s6{grid-column:span 6}.s5{grid-column:span 5}.s4{grid-column:span 4}
+.card{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:17px;box-shadow:var(--shadow)}
+.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.stat{background:#fbfcfe;border:1px solid var(--line);border-radius:13px;padding:12px}.stat b{font-size:22px}.stat span{display:block;color:var(--muted);font-size:11px}
+.pill{display:inline-block;background:var(--chip);color:#2b55c3;border-radius:999px;padding:5px 8px;font-size:11px;font-weight:800;margin:2px}.pill.green{background:#ecfdf3;color:#067647}.pill.amber{background:#fff8e6;color:#8a5700}.pill.red{background:#fff0ef;color:#b42318}.pill.purple{background:#f0ecff;color:#5b3fd1}
+.btn{border:0;border-radius:10px;padding:8px 11px;font-weight:800;cursor:pointer}.primary{background:var(--blue);color:#fff}.primary:hover{background:var(--blue2)}.secondary{background:#eef2f7;color:#273244}.ghost{background:#fff;border:1px solid var(--line)}.danger{background:#fff0ef;color:var(--red)}.small{padding:6px 8px;font-size:11px}
+.note{font-size:13px;line-height:1.7;background:#f7f9ff;border-left:4px solid var(--blue);padding:10px 12px;border-radius:0 10px 10px 0}.good{background:#ecfdf3;color:#067647;padding:10px;border-radius:10px;font-size:13px;line-height:1.6}.warn{background:#fff8e6;color:#7b4a00;padding:10px;border-radius:10px;font-size:13px;line-height:1.6}.dangerbox{background:#fff1f0;color:#8d261d;padding:10px;border-radius:10px;font-size:13px;line-height:1.6}
+.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+label{display:block;font-size:12px;font-weight:800;margin:11px 0 5px} input,textarea,select{font:inherit;border:1px solid #d6dde8;border-radius:10px;padding:9px;width:100%;outline:none;background:#fff} textarea{min-height:95px;resize:vertical;line-height:1.6} input:focus,textarea:focus,select:focus{border-color:#8ba7ff;box-shadow:0 0 0 3px #edf2ff}
+audio{width:100%;height:38px}.aud{border:1px dashed #cbd5e1;border-radius:12px;padding:10px;margin-top:8px}.divider{height:1px;background:var(--line);margin:14px 0}.hidden{display:none!important} details{margin-top:8px} summary{cursor:pointer;font-weight:800}
+.flow{display:flex;gap:8px;align-items:stretch;overflow:auto;padding-bottom:3px}.flowstep{min-width:165px;padding:12px;border:1px solid var(--line);border-radius:13px;background:#fff;position:relative}.flowstep.done{background:#f1fbf6;border-color:#b7e4cd}.flowstep.active{border:2px solid var(--blue);background:#f7f9ff}.flowstep .num{font-weight:900;font-size:12px;color:#64748b}.flowstep b{display:block;margin:4px 0}.flowstep .check{position:absolute;right:10px;top:10px}
+.review-card{border:1px solid var(--line);border-radius:15px;padding:15px;background:#fff;margin-top:10px}.review-front{font-size:18px;font-weight:850;line-height:1.5;margin:8px 0}.answer{display:none}.review-card.revealed .answer{display:block}.review-actions{display:none;gap:7px;flex-wrap:wrap;margin-top:10px}.review-card.revealed .review-actions{display:flex}
+.rating-again{background:#fff0ef;color:#b42318}.rating-hard{background:#fff8e6;color:#8a5700}.rating-good{background:#eef3ff;color:#2447ae}.rating-easy{background:#ecfdf3;color:#067647}
+.progress{height:8px;background:#edf0f4;border-radius:999px;overflow:hidden}.progress>div{height:100%;background:var(--blue)}
+.modebar{display:flex;gap:7px;flex-wrap:wrap}.modebar button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 10px;cursor:pointer}.modebar button.active{background:#111827;color:#fff;border-color:#111827}
+.table{overflow:auto;border:1px solid var(--line);border-radius:12px} table{border-collapse:collapse;width:100%;min-width:760px} th,td{padding:9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:13px} th{background:#f8fafc}
+.phrase{border:1px solid var(--line);border-radius:12px;padding:11px;margin-top:8px}.phrase .more{display:none;margin-top:8px}.phrase.open .more{display:block}
+.metric{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}.metric:last-child{border-bottom:0}
+canvas.wave{width:100%;height:150px;border:1px solid var(--line);border-radius:12px;background:#fff}.sentence{border:1px solid var(--line);border-radius:13px;padding:12px;margin-top:9px}.sentence.active{border-color:#9bb1ff;background:#fbfcff}.sentence-text{font-size:16px;font-weight:750;line-height:1.55}.sentence-status{font-size:11px;color:var(--muted)}
+.mastery{display:inline-flex;gap:3px;align-items:center}.mastery span{width:7px;height:7px;border-radius:50%;background:#dfe4eb}.mastery span.on{background:var(--green)}
+.barlist{display:grid;gap:7px}.barrow{display:grid;grid-template-columns:150px 1fr 36px;gap:8px;align-items:center;font-size:12px}.bartrack{height:8px;background:#eef1f5;border-radius:999px;overflow:hidden}.barfill{height:100%;background:var(--purple)}
+textarea.codeish,pre.codeish{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;white-space:pre-wrap}
+.archive-day{border:1px solid var(--line);border-radius:16px;background:#fff;margin-top:12px;overflow:hidden}.archive-day-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;background:#fbfcfe;border-bottom:1px solid var(--line)}.archive-day-body{padding:0 16px 14px}.archive-entry{padding:14px 0;border-bottom:1px solid var(--line)}.archive-entry:last-child{border-bottom:0}.archive-title{font-weight:850}.archive-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.calcell{aspect-ratio:1;border-radius:8px;border:1px solid var(--line);display:grid;place-items:center;font-size:10px;color:var(--muted);background:#fff}.calcell.study{background:#eaf0ff;color:#2148b7;border-color:#cbd8ff}.calcell.today{outline:2px solid var(--blue)}
+.recordingDot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ef4444;animation:pulse 1s infinite}@keyframes pulse{50%{opacity:.25}}
+
+.form-compact{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.side-actions .btn{width:100%;justify-content:center}
+.stickyCard{position:sticky;top:16px}
+@media(max-width:1300px){
+  .s7,.s5{grid-column:span 12}
+  .s8,.s4{grid-column:span 12}
+  .stickyCard{position:static}
+}
+@media(max-width:1200px){
+  .app{grid-template-columns:220px 1fr}
+}
+@media(max-width:1100px){
+  .app{grid-template-columns:1fr}
+  aside{height:auto;position:relative}
+  nav{display:flex;overflow:auto}
+  nav button{width:auto;white-space:nowrap}
+  main{padding:15px}
+  .s8,.s7,.s6,.s5,.s4{grid-column:span 12}
+}
+@media(max-width:720px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .two,.three,.archive-grid,.form-compact{grid-template-columns:1fr}
+  .barrow{grid-template-columns:110px 1fr 28px}
+  .row.responsive-stack{align-items:stretch}
+  .row.responsive-stack > *{width:100%}
+}
+
+
+/* ===== Final Polish Layout ===== */
+:root{
+  --page-max:1280px;
+  --card-radius:20px;
+}
+body{background:linear-gradient(180deg,#f7f9fc 0%,#f4f6fb 100%)}
+main{max-width:var(--page-max);padding:32px 32px 48px}
+.top{margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid #edf0f4}
+h1{font-size:30px;letter-spacing:-.02em}
+h2{font-size:19px;letter-spacing:-.01em}
+.card{border-radius:var(--card-radius);padding:22px;box-shadow:0 8px 24px rgba(31,42,84,.05)}
+.grid{gap:20px}
+.stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.stat{padding:16px 15px;border-radius:16px;min-height:82px;display:flex;flex-direction:column;justify-content:center}
+.stat b{font-size:26px;line-height:1}
+.stat span{font-size:12px;margin-top:7px}
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;overflow:visible}
+.flowstep{min-width:0;min-height:104px;padding:15px;border-radius:16px;display:flex;flex-direction:column;justify-content:center}
+.flowstep .num{margin-bottom:2px}
+.flowstep b{font-size:14px;line-height:1.45}
+label{margin:15px 0 7px;font-size:12px}
+input,textarea,select{border-radius:12px;padding:11px 12px}
+textarea{min-height:118px}
+.btn{border-radius:11px;padding:9px 13px}
+.note,.good,.warn,.dangerbox{border-radius:12px}
+.pill{padding:6px 9px}
+.two{gap:16px}
+.three{gap:14px}
+.archive-day{border-radius:18px;margin-top:16px;box-shadow:0 5px 16px rgba(31,42,84,.035)}
+.archive-day-head{padding:16px 18px}
+.archive-day-body{padding:0 18px 16px}
+.archive-entry{padding:18px 0}
+.review-card{max-width:920px;margin:14px auto 0;padding:18px;border-radius:17px}
+#review > .card{max-width:1020px;margin:0 auto}
+#archive > .card{max-width:1180px;margin:0 auto}
+#phrases #phraseList{max-width:1040px;margin:0 auto}
+#errors .grid,#weekly .grid,#teacher .grid{align-items:start}
+#own .card.s7,#elllo .card.s7{min-height:100%}
+#own .card.s5,#elllo .card.s5{align-self:start}
+#sentence .card.s5,#sentence .card.s7{align-self:start}
+#home .card{align-self:start}
+.calendar{gap:6px}
+.calcell{border-radius:10px}
+.table{border-radius:14px}
+audio{height:40px}
+.archive-grid{gap:16px}
+.sidebox{border-radius:14px}
+nav button{border-radius:11px;padding:11px 13px}
+@media(min-width:1500px){
+  main{max-width:1320px}
+}
+@media(max-width:1300px){
+  main{max-width:1100px}
+  .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .s7,.s5{grid-column:span 12}
+  .s8,.s4{grid-column:span 12}
+  .stickyCard{position:static}
+}
+@media(max-width:1100px){
+  .app{grid-template-columns:1fr}
+  aside{height:auto;position:relative;padding:14px}
+  .logo,.sub{display:inline-block;vertical-align:middle}
+  .sub{margin:0 0 0 10px}
+  nav{display:flex;overflow-x:auto;gap:4px;margin-top:10px;padding-bottom:4px}
+  nav button{width:auto;white-space:nowrap;margin:0}
+  .sidebox{display:none}
+  main{padding:22px 18px 40px;max-width:100%}
+  .s12,.s8,.s7,.s6,.s5,.s4{grid-column:span 12}
+}
+@media(max-width:760px){
+  main{padding:16px 12px 32px}
+  .top{display:block}
+  h1{font-size:26px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .card{padding:16px;border-radius:16px}
+  .grid{gap:14px}
+  .flow{grid-template-columns:1fr}
+  .flowstep{min-height:76px}
+  .two,.three,.archive-grid,.form-compact{grid-template-columns:1fr}
+  .row.responsive-stack{align-items:stretch}
+  .row.responsive-stack>*{width:100%}
+  .archive-day-head{align-items:flex-start}
+}
+
+
+/* ===== Grid bugfix for ELLLO / My English / Sentence Lab ===== */
+#elllo .grid,
+#own .grid,
+#sentence .grid{align-items:start}
+#elllo .card.s7,
+#own .card.s7,
+#sentence .card.s7{min-width:0}
+#elllo .card.s5,
+#own .card.s5,
+#sentence .card.s5{min-width:0}
+#sentence .card.s6{min-width:0}
+#sentence .card.s7{overflow:hidden}
+#sentence .card.s5{overflow:hidden}
+
+
+/* ===== FINAL RELEASE UI SYSTEM ===== */
+:root{
+  --content-max:1260px;
+  --module-side:340px;
+}
+main{
+  max-width:var(--content-max);
+  width:100%;
+  margin:0 auto;
+  padding:32px 30px 48px;
+}
+.page-lead{
+  max-width:760px;
+}
+.module-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(300px,var(--module-side));
+  gap:20px;
+  align-items:start;
+}
+.module-main,
+.module-side,
+.workspace-input,
+.workspace-sentences,
+.workspace-ref,
+.workspace-rec{
+  min-width:0;
+}
+.module-side{
+  position:sticky;
+  top:18px;
+}
+.module-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  padding-bottom:13px;
+  margin-bottom:8px;
+  border-bottom:1px solid var(--line);
+}
+.module-header h2{
+  margin:0;
+}
+.module-badge{
+  display:inline-flex;
+  align-items:center;
+  min-height:28px;
+  padding:5px 9px;
+  border-radius:999px;
+  background:#f2f5fb;
+  color:#536174;
+  font-size:11px;
+  font-weight:800;
+  white-space:nowrap;
+}
+.field-block{
+  padding:5px 0;
+}
+.form-actions{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+  padding-top:15px;
+  margin-top:8px;
+  border-top:1px solid var(--line);
+}
+.form-actions .primary{
+  min-width:220px;
+}
+.inline-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:8px 0 2px;
+}
+.side-stack{
+  display:grid;
+  gap:12px;
+}
+.side-note{
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fafbfe;
+}
+.sop-list{
+  display:grid;
+  gap:5px;
+}
+.sop-item{
+  display:grid;
+  grid-template-columns:30px 1fr 20px;
+  align-items:center;
+  gap:9px;
+  padding:10px 0;
+  border-bottom:1px solid var(--line);
+}
+.sop-item:last-child{border-bottom:0}
+.sop-num{
+  width:28px;height:28px;
+  border-radius:9px;
+  display:grid;place-items:center;
+  background:#eef3ff;
+  color:#275df5;
+  font-size:11px;
+  font-weight:900;
+}
+.sop-check{
+  color:#087a55;
+  font-weight:900;
+  text-align:center;
+}
+.audio-action-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:10px;
+}
+.audio-action-grid .btn{
+  width:100%;
+}
+.workspace-grid{
+  display:grid;
+  grid-template-columns:minmax(300px,.82fr) minmax(0,1.35fr);
+  grid-template-areas:
+    "input sentences"
+    "ref rec";
+  gap:20px;
+  align-items:start;
+}
+.workspace-input{grid-area:input}
+.workspace-sentences{grid-area:sentences;min-height:460px}
+.workspace-ref{grid-area:ref}
+.workspace-rec{grid-area:rec}
+.wave-card canvas.wave{
+  height:170px;
+}
+#sentenceList{
+  max-height:620px;
+  overflow:auto;
+  padding-right:3px;
+}
+#sentenceList::-webkit-scrollbar{width:8px}
+#sentenceList::-webkit-scrollbar-thumb{background:#d9dfeb;border-radius:999px}
+#sentenceList::-webkit-scrollbar-track{background:transparent}
+.archive-toolbar{
+  display:grid;
+  grid-template-columns:minmax(260px,1fr) 150px 150px auto;
+  gap:10px;
+  align-items:center;
+}
+#archiveList{
+  margin-top:12px;
+}
+.page-toolbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.card-title-row{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+}
+#own .module-main textarea#ownZh,
+#own .module-main textarea#ownEn{
+  min-height:145px;
+}
+#own .module-main textarea#ownRetell{
+  min-height:110px;
+}
+#elllo .module-main textarea#ellloHard{
+  min-height:120px;
+}
+#elllo .module-main textarea#ellloRetell{
+  min-height:110px;
+}
+#sentence textarea#sentenceText{
+  min-height:190px;
+}
+.file-input-wrap{
+  padding:10px;
+  border:1px dashed #cbd5e1;
+  border-radius:13px;
+  background:#fbfcff;
+}
+@media(max-width:1280px){
+  .module-grid{
+    grid-template-columns:1fr;
+  }
+  .module-side{
+    position:static;
+  }
+  .workspace-grid{
+    grid-template-columns:1fr;
+    grid-template-areas:
+      "input"
+      "sentences"
+      "ref"
+      "rec";
+  }
+  .workspace-sentences{min-height:auto}
+}
+@media(max-width:900px){
+  main{padding:20px 14px 36px}
+  .archive-toolbar{grid-template-columns:1fr 1fr}
+  .archive-toolbar #archiveSearch{grid-column:1/-1}
+  .archive-toolbar .btn{width:100%}
+}
+@media(max-width:620px){
+  .archive-toolbar{grid-template-columns:1fr}
+  .archive-toolbar #archiveSearch{grid-column:auto}
+  .audio-action-grid{grid-template-columns:1fr}
+  .form-actions{align-items:stretch}
+  .form-actions .btn{width:100%;min-width:0}
+  .inline-actions .btn{width:100%}
+}
+
+
+/* Free cloud sync */
+#cloudSyncCard input[type="password"]{font-family:inherit}
+#cloudSyncCard .module-header{align-items:center}
+#cloudSyncCard .note{line-height:1.7}
+
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+  <div class="logo">My English Lab <span style="font-size:10px;color:#93a4bf;font-weight:700">FINAL</span></div>
+  <div class="sub">Final stable build · 统一归档、每日复习、ELLLO、自己的英语、Sentence Lab、错误/盲点、周复盘。</div>
+  <nav>
+    <button class="active" data-page="home">今日</button>
+    <button data-page="review">每日复习</button>
+    <button data-page="elllo">ELLLO</button>
+    <button data-page="own">自己的英语</button>
+    <button data-page="sentence">Sentence Lab</button>
+    <button data-page="errors">错误与盲点</button>
+    <button data-page="phrases">语块库</button>
+    <button data-page="archive">统一归档</button>
+    <button data-page="weekly">周复盘</button>
+    <button data-page="teacher">AI 教师</button>
+    <button data-page="backup">设置与备份</button>
+  </nav>
+  <div class="sidebox"><b>最终设计原则</b><br>1）每天只保留 2–3 个主动表达；2）复习优先于新内容；3）ELLLO 测陌生听力；4）自己的英语练主动输出；5）所有历史都进入同一个归档。</div>
+</aside>
+
+<main>
+<section id="home">
+  <div class="top"><div><div class="kicker">Today</div><h1>今天只做下一步</h1><div class="muted" id="todayText"></div></div><span class="pill green" id="streakPill">连续学习 1 天</span></div>
+  <div class="stats">
+    <div class="stat"><b id="statDue">0</b><span>今日待复习</span></div>
+    <div class="stat"><b id="statReviewed">0</b><span>今日已复习</span></div>
+    <div class="stat"><b id="statTomorrow">0</b><span>明日待复习</span></div>
+    <div class="stat"><b id="statActive">0</b><span>主动语块</span></div>
+    <div class="stat"><b id="statErrors">0</b><span>需关注错误</span></div>
+    <div class="stat"><b id="statArchive">0</b><span>归档条目</span></div>
+  </div>
+
+  <div class="card" style="margin-top:15px">
+    <div class="row" style="justify-content:space-between"><div><div class="kicker">Daily Flow</div><h2>今日行动顺序</h2></div>
+      <select id="minutesSel" style="width:150px"><option value="30">30 分钟版</option><option value="45" selected>45 分钟版</option><option value="60">60 分钟版</option></select></div>
+    <div class="flow" id="dailyFlow"></div>
+    <div class="row" style="margin-top:12px"><button class="btn primary" id="goNext">进入下一步</button><button class="btn secondary" id="closeDayBtn">结束今天并生成日结</button></div>
+  </div>
+
+  <div class="grid" style="margin-top:15px">
+    <div class="card s4"><div class="kicker">Priority</div><h2>今天最重要的一件事</h2><div class="good" id="todayFocus"></div></div>
+    <div class="card s4"><div class="kicker">Fragmented Time</div><h2>碎片时间任务池</h2><div class="row responsive-stack"><span class="pill">循环已学音频</span><span class="pill">听自己录音</span><span class="pill">3 个旧语块提取</span><span class="pill">低强度 Shadowing</span></div></div>
+    <div class="card s4"><div class="kicker">Calendar</div><h2>最近 28 天</h2><div class="calendar" id="calendar"></div></div>
+  </div>
+</section>
+
+<section id="review" class="hidden">
+  <div class="top"><div><div class="kicker">Spaced Retrieval</div><h1>每日复习</h1><div class="muted">提示 → 提取 → 变体 → 半自由问答。超过 8 张时只做优先级最高的。</div></div>
+    <div class="row"><select id="reviewFilter" style="width:180px"><option value="all">全部</option><option value="phrase">语块</option><option value="listening">ELLLO</option><option value="pronunciation">语音</option></select><button class="btn secondary" id="shuffleReview">打乱</button></div>
+  </div>
+  <div class="card"><div class="row" style="justify-content:space-between"><div><b id="reviewProgressText">0 / 0</b><div class="muted">Again / Hard / Good / Easy 会安排不同间隔。</div></div><div style="width:280px;max-width:55%"><div class="progress"><div id="reviewProgressBar" style="width:0%"></div></div></div></div><div id="reviewCards"></div></div>
+</section>
+
+<section id="elllo" class="hidden">
+  <div class="top">
+    <div class="page-lead">
+      <div class="kicker">Unknown Input</div>
+      <h1>ELLLO 每日练习</h1>
+      <div class="muted">先测“第一次能不能听懂”，再定位弱读、连读、词汇和反应速度。这里只做陌生听力训练，不把整篇材料背下来。</div>
+    </div>
+  </div>
+
+  <div class="module-grid">
+    <div class="card module-main">
+      <div class="module-header">
+        <div>
+          <h2>今日听力记录</h2>
+          <div class="tiny">记录第一次盲听结果，再做后续分析。</div>
+        </div>
+        <span class="module-badge">B1 → B2 Listening</span>
+      </div>
+
+      <div class="form-compact">
+        <div class="field-block"><label>日期</label><input id="ellloDate" type="date"></div>
+        <div class="field-block"><label>编号 / 标题</label><input id="ellloTitle" placeholder="002 - ..."></div>
+      </div>
+
+      <div class="field-block"><label>链接（可选）</label><input id="ellloUrl" type="url" placeholder="https://elllo.org/..."></div>
+      <div class="field-block"><label>第一次盲听理解率 %</label><input id="ellloPct" type="number" min="0" max="100" value="60"></div>
+      <div class="field-block"><label>卡点（建议带时间戳）</label><textarea id="ellloHard" placeholder="例如：0:31–0:36，单词认识但连起来没听出来。"></textarea></div>
+
+      <div class="field-block">
+        <label>问题分类（可多选）</label>
+        <div class="row" id="blindChecks">
+          <label class="pill"><input type="checkbox" value="contractions"> 缩略</label>
+          <label class="pill"><input type="checkbox" value="weak_forms"> 弱读</label>
+          <label class="pill"><input type="checkbox" value="linking"> 连读</label>
+          <label class="pill"><input type="checkbox" value="endings"> 词尾</label>
+          <label class="pill"><input type="checkbox" value="stress"> 重音/节奏</label>
+          <label class="pill"><input type="checkbox" value="unknown_vocab"> 生词</label>
+        </div>
+      </div>
+
+      <div class="field-block"><label>今天只留下 2–3 个高价值表达</label><textarea id="ellloChunks" placeholder="每行一个。不要把整篇 transcript 搬进来。"></textarea></div>
+      <div class="field-block"><label>对应中文提示（每行一个）</label><textarea id="ellloCues"></textarea></div>
+      <div class="field-block"><label>30–60 秒复述</label><textarea id="ellloRetell" placeholder="关掉 transcript，用自己的英语说。"></textarea></div>
+
+      <div class="form-actions">
+        <div class="tiny">草稿自动保存 · 保存后进入统一归档，并把新表达安排进复习。</div>
+        <button class="btn primary" id="saveElllo">保存 ELLLO</button>
+      </div>
+    </div>
+
+    <div class="module-side side-stack">
+      <div class="card">
+        <div class="module-header">
+          <div><h2>7 步 SOP</h2><div class="tiny">一篇材料完整跑一遍即可。</div></div>
+          <span class="module-badge">约 15 min</span>
+        </div>
+        <div class="sop-list">
+          <div class="sop-item"><span class="sop-num">1</span><span>完整盲听，不暂停</span><span class="sop-check">✓</span></div>
+          <div class="sop-item"><span class="sop-num">2</span><span>卡点重听 3–5 次</span><span class="sop-check">✓</span></div>
+          <div class="sop-item"><span class="sop-num">3</span><span>开 transcript 找原因</span><span class="sop-check">✓</span></div>
+          <div class="sop-item"><span class="sop-num">4</span><span>只记卡点 + 高价值表达</span><span class="sop-check">✓</span></div>
+          <div class="sop-item"><span class="sop-num">5</span><span>关文本再完整听</span><span class="sop-check">✓</span></div>
+          <div class="sop-item"><span class="sop-num">6</span><span>Shadowing 20–60 秒</span><span class="sop-check">✓</span></div>
+          <div class="sop-item"><span class="sop-num">7</span><span>脱稿复述</span><span class="sop-check">✓</span></div>
+        </div>
+      </div>
+      <div class="side-note">
+        <b>判定标准</b>
+        <div class="muted" style="margin-top:5px">成功不等于 100% 听写正确。重点看第一次理解率，以及“认识但没听出来”的地方有没有越来越少。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="own" class="hidden">
+  <div class="top">
+    <div class="page-lead">
+      <div class="kicker">My English</div>
+      <h1>每天真正想说的话</h1>
+      <div class="muted">每天 2–4 句真实想法，把“我想说什么”逐渐变成可以直接调用的英语。自己的内容要说熟，不追求写成高级作文。</div>
+    </div>
+  </div>
+
+  <div class="module-grid">
+    <div class="card module-main">
+      <div class="module-header">
+        <div>
+          <h2>今天的个人表达</h2>
+          <div class="tiny">中文 → 自然英文 → 主动语块 → 脱稿复述</div>
+        </div>
+        <span class="module-badge">B1–B2 Natural English</span>
+      </div>
+
+      <div class="form-compact">
+        <div class="field-block"><label>日期</label><input id="ownDate" type="date"></div>
+        <div class="field-block"><label>主题标签（逗号分隔）</label><input id="ownTags" placeholder="工作, 游戏, 学英语"></div>
+      </div>
+
+      <div class="field-block"><label>我今天真正想说的中文</label><textarea id="ownZh" placeholder="写真实想法即可，不用先想英语怎么说。"></textarea></div>
+      <div class="inline-actions">
+        <button class="btn secondary" id="copyTranslatePrompt">复制自然化提示词</button>
+        <button class="btn ghost" id="copyTeacherPacket">复制教师分析包</button>
+      </div>
+
+      <div class="field-block"><label>自然英文</label><textarea id="ownEn" placeholder="粘贴适合长期口语训练的自然版本。"></textarea></div>
+      <div class="field-block"><label>老师只选的 2–3 个主动语块</label><textarea id="ownChunks" placeholder="每行一个。"></textarea></div>
+      <div class="field-block"><label>对应中文提示 / 场景</label><textarea id="ownCues"></textarea></div>
+      <div class="field-block"><label>我的脱稿复述</label><textarea id="ownRetell" placeholder="不用逐字一致；能用自己的方式说出来更重要。"></textarea></div>
+
+      <div class="form-actions">
+        <div class="tiny">草稿自动保存 · 新语块会进入次日复习。</div>
+        <button class="btn primary" id="saveOwn">保存“自己的英语”</button>
+      </div>
+    </div>
+
+    <div class="module-side side-stack">
+      <div class="card">
+        <div class="module-header">
+          <div><h2>参考音与录音</h2><div class="tiny">参考声音稳定，自己的表达逐步自然。</div></div>
+          <span class="module-badge">Shadowing</span>
+        </div>
+
+        <div class="field-block">
+          <label>参考音频</label>
+          <div class="file-input-wrap"><input id="ownRefFile" type="file" accept="audio/*"></div>
+          <div id="ownRefPreview"></div>
+        </div>
+
+        <div class="field-block">
+          <label>我的录音</label>
+          <div class="file-input-wrap"><input id="ownRecFile" type="file" accept="audio/*"></div>
+          <div id="ownRecPreview"></div>
+        </div>
+
+        <div class="audio-action-grid">
+          <button class="btn primary" id="ownRecordBtn">直接录音</button>
+          <button class="btn danger hidden" id="ownStopBtn">停止</button>
+          <button class="btn secondary" id="calcWpm">估算 WPM</button>
+          <button class="btn ghost" type="button" onclick="goPage('sentence')">去 Sentence Lab</button>
+        </div>
+        <div id="ownWpm" class="muted" style="margin-top:10px"></div>
+      </div>
+
+      <div class="side-note">
+        <b>口语优先级</b>
+        <div class="muted" style="margin-top:5px">意群与节奏 → 重音 → 弱读与连读 → 清晰度 → 速度。WPM 只是趋势指标，不是英语分数。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sentence" class="hidden">
+  <div class="top">
+    <div class="page-lead">
+      <div class="kicker">Sentence Lab</div>
+      <h1>逐句训练 + A/B 对比</h1>
+      <div class="muted">不要一上来硬跟整段。先逐句建立节奏和动作，再回到整段 Shadowing。</div>
+    </div>
+  </div>
+
+  <div class="workspace-grid">
+    <div class="card workspace-input">
+      <div class="module-header">
+        <div><h2>训练材料</h2><div class="tiny">建议 20–60 秒、3–8 句。</div></div>
+        <span class="module-badge">Input</span>
+      </div>
+      <div class="field-block"><label>日期</label><input id="sentenceDate" type="date"></div>
+      <div class="field-block"><label>英文文本</label><textarea id="sentenceText" placeholder="粘贴今天自己的英语，或 ELLLO 中最值得练的片段。"></textarea></div>
+      <div class="inline-actions">
+        <button class="btn primary" id="splitSentences">自动切句</button>
+        <button class="btn secondary" id="load0922">载入 9/22 自写英文</button>
+      </div>
+      <div class="field-block">
+        <label>整段参考音频</label>
+        <div class="file-input-wrap"><input id="sentenceRefFile" type="file" accept="audio/*"></div>
+        <div id="sentenceRefPrev"></div>
+      </div>
+      <div class="form-actions">
+        <div class="tiny">逐句练完后再保存整次训练。</div>
+        <button class="btn ghost" id="saveSentenceSession">保存 Sentence Lab</button>
+      </div>
+    </div>
+
+    <div class="card workspace-sentences">
+      <div class="module-header">
+        <div><h2>句子训练列表</h2><div class="tiny">每句：听 → 跟读 → 录自己 → 回听 → 通过。</div></div>
+        <span class="module-badge">Sentence by sentence</span>
+      </div>
+      <div id="sentenceList" class="muted">先在左侧粘贴英文并点击“自动切句”。</div>
+    </div>
+
+    <div class="card workspace-ref wave-card">
+      <div class="module-header">
+        <div><h2>参考音波形 / 停顿</h2><div class="tiny">观察节奏、停顿与能量变化。</div></div>
+        <span class="module-badge">Reference</span>
+      </div>
+      <canvas class="wave" id="refWave" width="760" height="150"></canvas>
+      <div id="refWaveInfo" class="tiny" style="margin-top:8px"></div>
+    </div>
+
+    <div class="card workspace-rec wave-card">
+      <div class="module-header">
+        <div><h2>我的整段录音</h2><div class="tiny">与参考音对照停顿和节奏，不做虚假的“发音分数”。</div></div>
+        <span class="module-badge">My recording</span>
+      </div>
+      <div class="row responsive-stack">
+        <button class="btn primary" id="recordWhole">录整段</button>
+        <button class="btn danger hidden" id="stopWhole">停止</button>
+        <div class="file-input-wrap" style="flex:1;min-width:220px"><input id="wholeRecFile" type="file" accept="audio/*"></div>
+      </div>
+      <div id="wholeRecPrev"></div>
+      <canvas class="wave" id="recWave" width="760" height="150" style="margin-top:10px"></canvas>
+      <div id="recWaveInfo" class="tiny" style="margin-top:8px"></div>
+    </div>
+  </div>
+</section>
+
+<section id="errors" class="hidden">
+  <div class="top"><div><div class="kicker">Error Intelligence</div><h1>错误与听力盲点</h1><div class="muted">重复 3 次以上，自动变成本周重点。</div></div><button class="btn primary" id="addErrorBtn">+ 手动记录错误</button></div>
+  <div class="grid"><div class="card s6"><h2>错误日志</h2><div id="errorList"></div></div><div class="card s6"><h2>听力盲点累计</h2><div id="blindspotBars" class="barlist"></div></div></div>
+</section>
+
+<section id="phrases" class="hidden">
+  <div class="top"><div><div class="kicker">Personal Language Bank</div><h1>语块库</h1><div class="muted">Recognition → Recall → Variation → Conversation → Automatic。</div></div><input id="phraseSearch" placeholder="搜索..." style="max-width:350px"></div><div id="phraseList"></div>
+</section>
+
+<section id="archive" class="hidden">
+  <div class="top"><div><div class="kicker">Unified Archive</div><h1>统一归档</h1><div class="muted">9/22 不再单独占一个页面。以后所有自己的英语、ELLLO、Sentence Lab、日结都按日期进这里。</div></div></div>
+  <div class="card">
+    <div class="archive-toolbar">
+      <input id="archiveSearch" placeholder="搜索标题、中文、英文、语块、标签...">
+      <select id="archiveType"><option value="all">全部类型</option><option value="own">自己的英语</option><option value="elllo">ELLLO</option><option value="sentence">Sentence Lab</option><option value="daily">日结</option></select>
+      <input id="archiveDate" type="date">
+      <button class="btn ghost" id="clearArchiveFilter">清除筛选</button>
+    </div>
+    <div id="archiveList"></div>
+  </div>
+</section>
+
+<section id="weekly" class="hidden">
+  <div class="top"><div><div class="kicker">Weekly Review</div><h1>周复盘</h1><div class="muted">只保留能指导下周训练的数据。</div></div><button class="btn secondary" id="copyWeekly">复制周报给 ChatGPT</button></div>
+  <div class="grid"><div class="card s4"><h2>本周学习量</h2><div id="weeklyVolume"></div></div><div class="card s4"><h2>最常见听力盲点</h2><div id="weeklyBlind"></div></div><div class="card s4"><h2>反复出现的问题</h2><div id="weeklyErrors"></div></div><div class="card s6"><h2>ELLLO 首遍理解率</h2><canvas class="wave" id="ellloTrend" width="720" height="150"></canvas></div><div class="card s6"><h2>本周唯一重点</h2><div id="weeklyFocus" class="good"></div><div class="divider"></div><div class="note">周日复测：新 ELLLO 首遍听一次 + 不准备说 2 分钟。</div></div></div>
+</section>
+
+<section id="teacher" class="hidden">
+  <div class="top"><div><div class="kicker">AI Teacher Bridge</div><h1>AI 教师</h1><div class="muted">网页负责训练与存档；ChatGPT 负责分析、纠错和生成复习卡。</div></div></div>
+  <div class="grid"><div class="card s6"><h2>① 导出今天给 ChatGPT</h2><button class="btn primary" id="copyFullTeacherPacket">复制今日完整分析包</button></div><div class="card s6"><h2>② 粘贴 ChatGPT 返回的 Teacher JSON</h2><textarea class="codeish" id="teacherJson"></textarea><button class="btn primary" id="importTeacherJson">导入老师结果</button><div id="teacherImportMsg" class="muted" style="margin-top:7px"></div></div><div class="card s12"><h2>JSON 模板</h2><details><summary>展开模板</summary><pre class="note codeish" id="jsonTemplate"></pre></details></div></div>
+</section>
+
+<section id="backup" class="hidden">
+  <div class="top"><div><div class="kicker">Settings & Backup</div><h1>设置与备份</h1></div></div>
+  <div class="grid">
+
+    <div class="card s12" id="cloudSyncCard">
+      <div class="module-header">
+        <div>
+          <h2>免费云同步（Supabase Free）</h2>
+          <div class="tiny">Supabase 免费云端已经替你配置完成。同一账号在电脑 / 手机 / 平板登录后，学习进度自动同步。</div>
+        </div>
+        <span class="module-badge" id="cloudStatusBadge">未配置</span>
+      </div>
+
+      <div class="two">
+        <div>
+          <label>Supabase Project URL</label>
+          <input id="cloudUrl" placeholder="https://xxxx.supabase.co">
+        </div>
+        <div>
+          <label>Supabase Anon Key</label>
+          <input id="cloudAnonKey" placeholder="eyJhbGciOi...">
+        </div>
+      </div>
+
+      <div class="row responsive-stack" style="margin-top:10px">
+        <button class="btn secondary" id="saveCloudConfig">保存云端配置</button><span class="tiny">已预填你的免费 Supabase 项目</span>
+        <button class="btn ghost" id="testCloudConfig">测试连接</button>
+        <span class="tiny" id="cloudConfigMsg"></span>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="two">
+        <div>
+          <label>邮箱</label>
+          <input id="cloudEmail" type="email" autocomplete="email" placeholder="you@example.com">
+        </div>
+        <div>
+          <label>密码</label>
+          <input id="cloudPassword" type="password" autocomplete="current-password" placeholder="至少 6 位">
+        </div>
+      </div>
+
+      <div class="row responsive-stack" style="margin-top:10px">
+        <button class="btn primary" id="cloudLogin">登录</button>
+        <button class="btn secondary" id="cloudSignup">免费注册</button>
+        <button class="btn ghost" id="cloudLogout">退出登录</button>
+        <span class="tiny" id="cloudUserText">未登录</span>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="row responsive-stack">
+        <button class="btn primary" id="cloudPull">从云端恢复到本机</button>
+        <button class="btn secondary" id="cloudPush">上传本机进度到云端</button>
+        <button class="btn ghost" id="cloudSyncAudio">同步本机录音到云端</button>
+      </div>
+      <div class="note" style="margin-top:10px">
+        <b>自动同步：</b>登录后，每次保存学习记录 / 复习结果 / 设置时会延迟约 1 秒自动上传。另一台设备打开并登录后可以拉取最新进度。录音文件使用 Supabase Storage 免费额度；缺失录音在播放时会自动从云端下载到当前设备。
+      </div>
+      <div id="cloudSyncMsg" class="tiny" style="margin-top:8px"></div>
+    </div>
+
+    <div class="card s6"><h2>数据备份</h2><p class="muted">JSON 包含文字、复习、错误、盲点、归档和教师反馈。云同步登录后，文字进度会同步到 Supabase；录音会同步到私有 Storage。JSON 仍建议作为额外离线备份。</p><div class="row"><button class="btn primary" id="exportBtn">导出 JSON</button><label class="btn secondary" style="display:inline-block;margin:0">导入 JSON<input id="importInput" type="file" accept=".json" style="display:none"></label></div></div>
+    <div class="card s6"><h2>兼容旧版</h2><div class="note">Final 会尝试读取 V4 本地数据并迁移。如果浏览器因为 file:// 路径不同无法共享 localStorage，也可直接导入 V4 JSON 备份。</div><button class="btn secondary" id="migrateV4">尝试迁移 V4</button></div>
+    <div class="card s6"><h2>复习控制</h2><label>每天最多显示多少张到期卡</label><input id="maxReviewsSetting" type="number" min="3" max="20"><label>提醒阈值（复习债务）</label><input id="warningSetting" type="number" min="6" max="40"><button class="btn primary" id="saveSettings">保存设置</button></div>
+    <div class="card s6"><h2>重置</h2><div class="warn">建议先导出 JSON。</div><button class="btn danger" id="resetBtn" style="margin-top:9px">恢复 Final 初始状态</button></div>
+  </div>
+</section>
+</main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const INITIAL_STATE = {"version": 5, "settings": {"dailyMinutes": 45, "maxReviews": 8, "targetWpmLow": 135, "targetWpmHigh": 150, "reviewLimitWarning": 12}, "streak": {"count": 1, "lastDate": "2026-09-22"}, "records": [{"id": "own_0922", "type": "own", "date": "2026-09-22", "title": "New approach to learning English", "tags": ["学习方法", "个人表达"], "zh": "我今天想根据新的英语学习方法尝试一下，每天写一小段中文然后转换成英语，再用AI把英语转成语音，我根据此语音反复的琢磨重复，直到我能流畅地清晰地准确的背诵出来。", "en": "Today, I'd like to try a new approach to learning English: I'll write a short passage in Chinese every day, translate it into English, then use AI to convert the text into speech. I'll listen to the recording repeatedly, practicing until I can recite it fluently, clearly, and accurately.", "teacherEn": "Today, I'd like to try a new way of learning English. Every day, I'll write a short passage in Chinese, turn it into natural English, and use AI to generate an audio version. Then I'll listen to it over and over and practice until I can say the whole thing smoothly, clearly, and accurately without looking at the text.", "retell": "", "chunks": ["I'd like to try...", "a new approach to doing", "practice until I can..."], "wpm": 120, "referenceAsset": "assets/self_reference.mp3", "recordingAssets": ["assets/self_take_1.m4a", "assets/self_take_2.m4a"], "teacherNote": "优先问题：整体节奏偏逐词读。短期目标 135–150 WPM，不追参考音 179 WPM；先把意群、重音、弱读做出来。", "createdAt": "2026-09-22T23:59:00"}, {"id": "elllo_001", "type": "elllo", "date": "2026-09-22", "title": "001 - Keri Omelet", "tags": ["ELLLO", "B1", "自然交流"], "url": "", "pct": null, "hard": "", "blind": ["contractions"], "chunks": ["I've never ... before.", "keep doing that until...", "What ... do you recommend?", "give that a try"], "retell": "", "referenceAsset": "assets/elllo_001_kerri_omelet.mp3", "transcriptAsset": "assets/elllo_001_transcript.txt", "teacherNote": "重点不是厨房词汇本身，而是步骤说明、给建议、until、have to、自然弱读与缩略形式。", "createdAt": "2026-09-22T23:59:10"}, {"id": "summary_0922", "type": "daily", "date": "2026-09-22", "title": "9/22 Daily Summary", "tags": ["每日总结"], "summary": "完成：自己的英语 + 2 次录音 + ELLLO 001。下一步：先把 9/22 主动语块做成次日提取卡；录音训练优先修节奏，不追求参考音语速。", "createdAt": "2026-09-22T23:59:20"}], "reviewCards": [{"id": "rv1", "type": "phrase", "source": "My English 9/22", "front": "我想尝试一种新的方法。", "answer": "I'd like to try a new approach.", "focus": "I'd like to try...", "variant": "我想尝试一种更简单的英语学习方法。", "variantAnswer": "I'd like to try a simpler approach to learning English.", "question": "What would you like to try differently this week?", "due": "2026-09-23", "interval": 0, "ease": 2.5, "priority": 1, "mastery": "Recall", "reps": 0, "lapses": 0}, {"id": "rv2", "type": "phrase", "source": "My English 9/22", "front": "一种新的英语学习方法", "answer": "a new approach to learning English", "focus": "approach to + V-ing", "variant": "一种新的培训新员工的方法", "variantAnswer": "a new approach to training new staff", "question": "What's one approach to learning English that works for you?", "due": "2026-09-23", "interval": 0, "ease": 2.5, "priority": 1, "mastery": "Recall", "reps": 0, "lapses": 0}, {"id": "rv3", "type": "phrase", "source": "My English 9/22", "front": "一直练到我能够流畅地说出来。", "answer": "Practice until I can say it fluently.", "focus": "practice until I can...", "variant": "一直练到我能够不看文本复述出来。", "variantAnswer": "Practice until I can retell it without looking at the text.", "question": "How long do you usually practice until something feels natural?", "due": "2026-09-23", "interval": 0, "ease": 2.5, "priority": 1, "mastery": "Recall", "reps": 0, "lapses": 0}, {"id": "rv4", "type": "listening", "source": "ELLLO 001", "front": "我以前从来没做过这个。", "answer": "I've never made one before.", "focus": "I've never ... before.", "variant": "我以前从来没用过这个工具。", "variantAnswer": "I've never used this tool before.", "question": "What's something you've never done before but want to try?", "due": "2026-09-23", "interval": 0, "ease": 2.5, "priority": 1, "mastery": "Recall", "reps": 0, "lapses": 0}, {"id": "rv5", "type": "phrase", "source": "ELLLO 001", "front": "一直这样做，直到大部分鸡蛋熟了。", "answer": "Keep doing that until most of the egg is cooked.", "focus": "keep doing that until...", "variant": "一直测试，直到结果稳定。", "variantAnswer": "Keep testing it until the results are stable.", "question": "Can you explain one process using 'keep ... until ...'?", "due": "2026-09-23", "interval": 0, "ease": 2.5, "priority": 2, "mastery": "Recall", "reps": 0, "lapses": 0}, {"id": "rv6", "type": "phrase", "source": "ELLLO 001", "front": "你推荐什么馅料？", "answer": "What fillings do you recommend?", "focus": "What ... do you recommend?", "variant": "你推荐哪个模型？", "variantAnswer": "Which model do you recommend?", "question": "What English-learning resource do you recommend to a B1 learner?", "due": "2026-09-23", "interval": 0, "ease": 2.5, "priority": 1, "mastery": "Recall", "reps": 0, "lapses": 0}, {"id": "rv7", "type": "phrase", "source": "ELLLO 001", "front": "我得试试看。", "answer": "I'll have to give that a try.", "focus": "give that a try", "variant": "这个方法看起来不错，我得试试看。", "variantAnswer": "That approach looks good. I'll have to give it a try.", "question": "What's something new you'd like to give a try?", "due": "2026-09-23", "interval": 0, "ease": 2.5, "priority": 1, "mastery": "Recall", "reps": 0, "lapses": 0}, {"id": "rv8", "type": "pronunciation", "source": "Pronunciation 9/22", "front": "I'd / I'll：输出时应该怎么处理尾音？", "answer": "尾音要轻做，但不要完全吞掉。重点是把整个语块说顺，例如 I'd like... / I'll write...", "focus": "contractions + weak final consonants", "variant": "跟读 3 次：I'd like to try... / I'll write a short passage...", "variantAnswer": "", "question": "Can you say both chunks naturally without over-emphasizing the final sound?", "due": "2026-09-23", "interval": 0, "ease": 2.5, "priority": 2, "mastery": "Recall", "reps": 0, "lapses": 0}], "reviewHistory": [], "phrases": [{"text": "bend over backwards", "meaning": "竭尽全力", "example": "I'm constantly bending over backwards to make it work.", "tags": ["active", "old"], "mastery": "Recall"}, {"text": "jump to conclusions", "meaning": "贸然下结论", "example": "Let's not jump to conclusions.", "tags": ["active", "old"], "mastery": "Recall"}, {"text": "give someone the benefit of the doubt", "meaning": "在证据不足时先选择相信", "example": "Give him the benefit of the doubt for now.", "tags": ["active", "old"], "mastery": "Recall"}, {"text": "pull it off", "meaning": "成功搞定难事", "example": "How did you pull it off?", "tags": ["active", "old"], "mastery": "Recall"}, {"text": "end up doing", "meaning": "最后结果做了……", "example": "I ended up staying up late.", "tags": ["active", "old"], "mastery": "Recall"}, {"text": "figure out", "meaning": "弄明白；解决", "example": "I'm trying to figure out what went wrong.", "tags": ["active", "old"], "mastery": "Recall"}, {"text": "I'd like to try...", "meaning": "我想尝试……", "example": "I'd like to try a new approach.", "tags": ["active", "9/22"], "mastery": "Recall"}, {"text": "a new approach to doing", "meaning": "一种做某事的新方法", "example": "a new approach to learning English", "tags": ["active", "9/22"], "mastery": "Recall"}, {"text": "practice until I can...", "meaning": "一直练到我能够……", "example": "Practice until I can say it fluently.", "tags": ["active", "9/22"], "mastery": "Recall"}, {"text": "I've never ... before.", "meaning": "我以前从没……过", "example": "I've never made one before.", "tags": ["active", "ELLLO001"], "mastery": "Recall"}, {"text": "keep doing that until...", "meaning": "一直这样做，直到……", "example": "Keep doing that until most of the egg is cooked.", "tags": ["active", "ELLLO001"], "mastery": "Recall"}, {"text": "What ... do you recommend?", "meaning": "你推荐什么……？", "example": "What fillings do you recommend?", "tags": ["active", "ELLLO001"], "mastery": "Recall"}, {"text": "give that a try", "meaning": "试试看", "example": "I'll have to give that a try.", "tags": ["active", "ELLLO001"], "mastery": "Recall"}], "errors": [{"id": "err_do_are", "category": "grammar", "item": "Do you ...? vs Are you ...?", "count": 1, "last": "2026-09-22", "status": "watch", "note": "Are you + adjective/noun/place/V-ing; Do you + base verb."}, {"id": "err_to_ing", "category": "grammar", "item": "to do vs preposition + V-ing", "count": 1, "last": "2026-09-22", "status": "watch", "note": "输出时优先记语块：would like to do / approach to doing。"}, {"id": "err_contraction", "category": "pronunciation", "item": "I'd / you'll 等缩略形式尾音", "count": 1, "last": "2026-09-22", "status": "watch", "note": "尾音轻做，不要完全吞；听力按整个语块识别。"}], "blindspots": [{"id": "bs_contractions", "category": "contractions", "label": "缩略形式（I'd / I'll / you'll 等）", "count": 1, "last": "2026-09-22"}, {"id": "bs_weakforms", "category": "weak_forms", "label": "弱读 / 功能词", "count": 0, "last": null}, {"id": "bs_linking", "category": "linking", "label": "连读 / 辅音连接", "count": 0, "last": null}, {"id": "bs_endings", "category": "endings", "label": "词尾辅音 / -ed / -s", "count": 0, "last": null}, {"id": "bs_stress", "category": "stress", "label": "词重音 / 句重音", "count": 0, "last": null}, {"id": "bs_vocab", "category": "unknown_vocab", "label": "生词导致没听懂", "count": 0, "last": null}], "drafts": {"own": {"date": "2026-09-23", "zh": "", "en": "", "chunks": "", "cues": "", "retell": "", "tags": ""}, "elllo": {"date": "2026-09-23", "title": "", "url": "", "pct": 60, "hard": "", "chunks": "", "cues": "", "retell": "", "blind": []}}, "teacherFeedback": []};
+const KEY='myEnglishLabFinalV5', V4KEY='myEnglishLabV4';
+const DB='EnglishLabFinalAudio', STORE='audio';
+const today=()=>new Date().toISOString().slice(0,10);
+const clone=x=>JSON.parse(JSON.stringify(x));
+let state=(()=>{try{const x=JSON.parse(localStorage.getItem(KEY));return x&&x.version===5?x:clone(INITIAL_STATE)}catch(e){return clone(INITIAL_STATE)}})();
+let db=null, mediaRecorder=null, mediaChunks=[], currentSentenceIndex=null, sessionDone=0;
+window.sentences=[]; window.sentenceRefId=null; window.wholeRecId=null;
+
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function addDays(date,n){let d=new Date(date+'T00:00:00');d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)}
+function maxDate(a,b){return a>b?a:b}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));renderAll();scheduleCloudPush()}
+function goPage(id){document.querySelectorAll('main section').forEach(s=>s.classList.toggle('hidden',s.id!==id));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));if(id==='archive')renderArchive();if(id==='weekly')renderWeekly()}
+window.goPage=goPage;document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>goPage(b.dataset.page));
+document.getElementById('todayText').textContent=new Date().toLocaleDateString('zh-CN',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
+
+function openDB(){return new Promise((resolve,reject)=>{let r=indexedDB.open(DB,1);r.onupgradeneeded=()=>{let d=r.result;if(!d.objectStoreNames.contains(STORE))d.createObjectStore(STORE,{keyPath:'id'})};r.onsuccess=()=>{db=r.result;resolve(db)};r.onerror=()=>reject(r.error)})}
+async function putAudio(blob,name){if(!db)await openDB();let id='aud_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);let saved=await new Promise((resolve,reject)=>{let tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).put({id,blob,name,mime:blob.type,created:Date.now()});tx.oncomplete=()=>resolve(id);tx.onerror=()=>reject(tx.error)});uploadAudioToCloud(id,blob).catch(()=>{});return saved}
+async function getLocalAudio(id){if(!id)return null;if(!db)await openDB();return new Promise((resolve,reject)=>{let r=db.transaction(STORE,'readonly').objectStore(STORE).get(id);r.onsuccess=()=>resolve(r.result||null);r.onerror=()=>reject(r.error)})}
+async function getAudio(id){if(!id)return null;let local=await getLocalAudio(id);if(local)return local;let remote=await downloadAudioFromCloud(id);if(remote){if(!db)await openDB();await new Promise((resolve,reject)=>{let tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).put(remote);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)});return remote}return null}
+async function previewStored(id,boxId){let x=await getAudio(id);if(!x)return;let u=URL.createObjectURL(x.blob);document.getElementById(boxId).innerHTML=`<div class="aud"><audio controls src="${u}"></audio><div class="tiny">${esc(x.name)}</div></div>`}
+function assetAudio(path,label='音频'){return path?`<div class="aud"><b>${esc(label)}</b><audio controls src="${esc(path)}"></audio></div>`:''}
+
+function initDates(){
+  for(let id of ['ownDate','ellloDate','sentenceDate'])document.getElementById(id).value=today();
+}
+function loadDrafts(){
+  let o=state.drafts?.own||{},e=state.drafts?.elllo||{};
+  document.getElementById('ownDate').value=o.date||today();document.getElementById('ownZh').value=o.zh||'';document.getElementById('ownEn').value=o.en||'';document.getElementById('ownChunks').value=o.chunks||'';document.getElementById('ownCues').value=o.cues||'';document.getElementById('ownRetell').value=o.retell||'';document.getElementById('ownTags').value=o.tags||'';
+  document.getElementById('ellloDate').value=e.date||today();document.getElementById('ellloTitle').value=e.title||'';document.getElementById('ellloUrl').value=e.url||'';document.getElementById('ellloPct').value=e.pct??60;document.getElementById('ellloHard').value=e.hard||'';document.getElementById('ellloChunks').value=e.chunks||'';document.getElementById('ellloCues').value=e.cues||'';document.getElementById('ellloRetell').value=e.retell||'';
+  [...document.querySelectorAll('#blindChecks input')].forEach(x=>x.checked=(e.blind||[]).includes(x.value))
+}
+function bindDrafts(){
+  ['ownDate','ownZh','ownEn','ownChunks','ownCues','ownRetell','ownTags'].forEach(id=>document.getElementById(id).addEventListener('input',()=>{state.drafts.own={date:document.getElementById('ownDate').value,zh:document.getElementById('ownZh').value,en:document.getElementById('ownEn').value,chunks:document.getElementById('ownChunks').value,cues:document.getElementById('ownCues').value,retell:document.getElementById('ownRetell').value,tags:document.getElementById('ownTags').value};localStorage.setItem(KEY,JSON.stringify(state))}));
+  ['ellloDate','ellloTitle','ellloUrl','ellloPct','ellloHard','ellloChunks','ellloCues','ellloRetell'].forEach(id=>document.getElementById(id).addEventListener('input',saveEllloDraft));
+  document.querySelectorAll('#blindChecks input').forEach(x=>x.addEventListener('change',saveEllloDraft))
+}
+function saveEllloDraft(){state.drafts.elllo={date:document.getElementById('ellloDate').value,title:document.getElementById('ellloTitle').value,url:document.getElementById('ellloUrl').value,pct:+document.getElementById('ellloPct').value,hard:document.getElementById('ellloHard').value,chunks:document.getElementById('ellloChunks').value,cues:document.getElementById('ellloCues').value,retell:document.getElementById('ellloRetell').value,blind:[...document.querySelectorAll('#blindChecks input:checked')].map(x=>x.value)};localStorage.setItem(KEY,JSON.stringify(state))}
+
+function dueCards(date=today(),filter='all'){return state.reviewCards.filter(c=>(!c.due||c.due<=date)&&(filter==='all'||c.type===filter)).sort((a,b)=>(a.priority||2)-(b.priority||2))}
+function typeSchedule(type,rating,iv=0,ease=2.5){
+  if(type==='pronunciation'){if(rating==='again')return 1;if(rating==='hard')return iv?Math.max(1,Math.round(iv*1.2)):1;if(rating==='good')return iv?Math.max(2,Math.round(iv*1.8)):2;return iv?Math.max(5,Math.round(iv*2.3)):5}
+  if(type==='listening'){if(rating==='again')return 1;if(rating==='hard')return iv?Math.max(2,Math.round(iv*1.4)):2;if(rating==='good')return iv?Math.max(4,Math.round(iv*2)):4;return iv?Math.max(7,Math.round(iv*2.5)):7}
+  if(rating==='again')return 1;if(rating==='hard')return iv?Math.max(2,Math.round(iv*1.5)):2;if(rating==='good')return iv?Math.max(3,Math.round(iv*ease)):3;return iv?Math.max(7,Math.round(iv*ease*1.35)):7
+}
+function masteryDots(m){let levels=['Recognition','Recall','Variation','Conversation','Automatic'],idx=Math.max(0,levels.indexOf(m));return `<span class="mastery" title="${esc(m)}">${levels.map((_,i)=>`<span class="${i<=idx?'on':''}"></span>`).join('')}</span>`}
+function renderReview(){
+  let f=document.getElementById('reviewFilter').value,cards=dueCards(today(),f).slice(0,state.settings.maxReviews||8),total=sessionDone+cards.length;
+  document.getElementById('reviewCards').innerHTML=cards.map(c=>`<div class="review-card" id="${c.id}">
+    <div class="row"><span class="pill">${esc(c.source)}</span><span class="pill purple">${esc(c.type)}</span>${masteryDots(c.mastery||'Recognition')}</div>
+    <div class="review-front">${esc(c.front)}</div><button class="btn primary small" onclick="revealCard('${c.id}')">显示答案</button>
+    <div class="answer"><div class="note"><b>目标：</b>${esc(c.answer)}</div>${c.variant?`<div class="divider"></div><div class="muted"><b>受控变体：</b>${esc(c.variant)}</div>${c.variantAnswer?`<details><summary>看变体答案</summary><div class="good" style="margin-top:6px">${esc(c.variantAnswer)}</div></details>`:''}`:''}${c.question?`<div class="divider"></div><div class="muted"><b>半自由问题：</b>${esc(c.question)}</div>`:''}</div>
+    <div class="review-actions"><button class="btn small rating-again" onclick="rateCard('${c.id}','again')">Again</button><button class="btn small rating-hard" onclick="rateCard('${c.id}','hard')">Hard</button><button class="btn small rating-good" onclick="rateCard('${c.id}','good')">Good</button><button class="btn small rating-easy" onclick="rateCard('${c.id}','easy')">Easy</button></div>
+  </div>`).join('')||'<div class="good">今天到期卡已经完成。不要为了刷数量继续塞新卡。</div>';
+  let pct=total?Math.round(sessionDone/total*100):100;document.getElementById('reviewProgressText').textContent=`${sessionDone} / ${total}`;document.getElementById('reviewProgressBar').style.width=pct+'%'
+}
+window.revealCard=id=>document.getElementById(id)?.classList.add('revealed');
+window.rateCard=(id,rating)=>{
+  let c=state.reviewCards.find(x=>x.id===id);if(!c)return;let days=typeSchedule(c.type,rating,c.interval||0,c.ease||2.5);
+  if(rating==='again'){c.lapses=(c.lapses||0)+1;c.ease=Math.max(1.3,(c.ease||2.5)-.2)} if(rating==='hard')c.ease=Math.max(1.3,(c.ease||2.5)-.1);if(rating==='easy')c.ease=(c.ease||2.5)+.1;
+  c.interval=days;c.due=addDays(today(),days);c.reps=(c.reps||0)+1;
+  let levels=['Recognition','Recall','Variation','Conversation','Automatic'],idx=levels.indexOf(c.mastery||'Recognition');if((rating==='good'||rating==='easy')&&c.reps>=2)idx=Math.min(4,idx+1);if(rating==='again')idx=Math.max(0,idx-1);c.mastery=levels[idx];
+  state.reviewHistory.push({date:today(),cardId:id,rating,type:c.type});sessionDone++;updateStreak(today());save()
+};
+document.getElementById('reviewFilter').onchange=renderReview;document.getElementById('shuffleReview').onclick=()=>{state.reviewCards.sort(()=>Math.random()-.5);renderReview()};
+
+function flowSteps(){
+  let min=+document.getElementById('minutesSel').value;
+  let steps=[{id:'review',label:'复习',mins:5,page:'review'},{id:'elllo',label:'ELLLO 陌生听力',mins:min===30?10:15,page:'elllo'},{id:'sentence',label:'Shadowing / Sentence Lab',mins:min===30?5:10,page:'sentence'},{id:'own',label:'自己的英语',mins:min===60?15:10,page:'own'}];
+  if(min>=45)steps.push({id:'voice',label:'Voice / 录音输出',mins:min===60?15:5,page:'own'});return steps
+}
+function todayDone(id){
+  if(id==='review')return state.reviewHistory.some(x=>x.date===today());
+  if(id==='voice')return state.records.some(x=>x.type==='voice'&&x.date===today());
+  return state.records.some(x=>x.type===id&&x.date===today())
+}
+function renderFlow(){
+  let steps=flowSteps(),first=null;document.getElementById('dailyFlow').innerHTML=steps.map((s,i)=>{let done=todayDone(s.id);if(!done&&!first)first=s;return `<div class="flowstep ${done?'done':(!first||first!==s)?'':'active'}"><span class="num">0${i+1}</span>${done?'<span class="check">✓</span>':''}<b>${esc(s.label)}</b><span class="tiny">${s.mins} 分钟</span></div>`}).join('');
+  window._nextFlow=first||steps[steps.length-1];document.getElementById('todayFocus').textContent=first?`下一步：${first.label}。完成后再进入下一项。`:'核心流程已完成，碎片时间只做轻量复习即可。'
+}
+document.getElementById('minutesSel').onchange=renderFlow;document.getElementById('goNext').onclick=()=>goPage(window._nextFlow?.page||'review');
+
+function updateStreak(date){
+  let last=state.streak.lastDate;if(last===date)return;let y=addDays(date,-1);state.streak.count=last===y?(state.streak.count||0)+1:1;state.streak.lastDate=date
+}
+function addCards(lines,cues,source,type,baseDate){
+  let arr=lines.split(/\n+/).map(x=>x.trim()).filter(Boolean).slice(0,3),ca=cues.split(/\n+/).map(x=>x.trim()),due=maxDate(addDays(baseDate,1),today());
+  arr.forEach((a,i)=>state.reviewCards.push({id:'rv_'+Date.now()+'_'+i+'_'+Math.random().toString(36).slice(2,5),type,source,front:ca[i]||`请主动说出：${a}`,answer:a,focus:a,variant:'',variantAnswer:'',question:'请用这个表达回答一个与你今天内容相关的问题。',due,interval:0,ease:2.5,priority:2,mastery:'Recognition',reps:0,lapses:0}))
+}
+function incrementBlind(categories,date){categories.forEach(cat=>{let b=state.blindspots.find(x=>x.category===cat);if(b){b.count=(b.count||0)+1;b.last=date}})}
+document.getElementById('saveElllo').onclick=()=>{
+  let date=document.getElementById('ellloDate').value||today(),title=document.getElementById('ellloTitle').value.trim();if(!title)return alert('请填写编号/标题。');
+  let blind=[...document.querySelectorAll('#blindChecks input:checked')].map(x=>x.value),chunks=document.getElementById('ellloChunks').value.trim();
+  state.records.push({id:'elllo_'+Date.now(),type:'elllo',date,title,url:document.getElementById('ellloUrl').value.trim(),pct:+document.getElementById('ellloPct').value,hard:document.getElementById('ellloHard').value.trim(),blind,chunks:chunks.split(/\n+/).filter(Boolean),retell:document.getElementById('ellloRetell').value.trim(),createdAt:new Date().toISOString()});
+  incrementBlind(blind,date);addCards(chunks,document.getElementById('ellloCues').value,title,'listening',date);updateStreak(date);state.drafts.elllo={date:today(),title:'',url:'',pct:60,hard:'',chunks:'',cues:'',retell:'',blind:[]};save();loadDrafts();alert('已保存到统一归档。')
+};
+document.getElementById('saveOwn').onclick=async()=>{
+  let date=document.getElementById('ownDate').value||today(),zh=document.getElementById('ownZh').value.trim(),en=document.getElementById('ownEn').value.trim();if(!zh&&!en)return alert('至少填写中文或英文。');
+  let tags=document.getElementById('ownTags').value.split(',').map(x=>x.trim()).filter(Boolean),chunks=document.getElementById('ownChunks').value.trim();
+  state.records.push({id:'own_'+Date.now(),type:'own',date,title:(zh||en).slice(0,60),tags,zh,en,retell:document.getElementById('ownRetell').value.trim(),chunks:chunks.split(/\n+/).filter(Boolean),referenceAudioId:document.getElementById('ownRefFile').dataset.audioId||null,recordingAudioId:document.getElementById('ownRecFile').dataset.audioId||null,createdAt:new Date().toISOString()});
+  addCards(chunks,document.getElementById('ownCues').value,'My English '+date,'phrase',date);updateStreak(date);state.drafts.own={date:today(),zh:'',en:'',chunks:'',cues:'',retell:'',tags:''};save();loadDrafts();alert('已保存到统一归档。')
+};
+
+function closeDay(){
+  let d=today(),types=state.records.filter(x=>x.date===d).map(x=>x.type),done=state.reviewHistory.filter(x=>x.date===d).length,summary=`今日完成：${[...new Set(types)].join(' / ')||'暂无正式归档'}；复习 ${done} 张。明日先处理到期复习，再开始新输入。`;
+  let old=state.records.find(x=>x.type==='daily'&&x.date===d);if(old)old.summary=summary;else state.records.push({id:'daily_'+Date.now(),type:'daily',date:d,title:d+' Daily Summary',tags:['每日总结'],summary,createdAt:new Date().toISOString()});save();alert('日结已写入统一归档。')
+}
+document.getElementById('closeDayBtn').onclick=closeDay;
+
+function copyText(t,msg='已复制'){navigator.clipboard.writeText(t).then(()=>alert(msg)).catch(()=>prompt('复制：',t))}
+function translationPrompt(){return `你是我的长期英语口语老师。我大约 B1，目标是日常自然交流 + 未来跨境电商/商务沟通。把下面中文改成适合长期 Shadowing 和主动输出的自然美式口语。保留原意和情绪，难度 B1–B2，不堆高级词。输出：1【自然英文】2【更简单复述版】3【最值得主动掌握的2–3个语块+中文】4【必要语法补丁】5【容易听不出/读错的语音点】。中文：\n${document.getElementById('ownZh').value.trim()}`}
+function teacherPacket(){return `请作为我的长期英语老师分析今天材料，并严格按 Final Teacher JSON 格式返回，除了 JSON 不要写其他文字。
+
+【自己的中文】
+${document.getElementById('ownZh').value}
+
+【自然英文草稿】
+${document.getElementById('ownEn').value}
+
+【自己的复述】
+${document.getElementById('ownRetell').value}
+
+【ELLLO】
+标题：${document.getElementById('ellloTitle').value}
+首遍理解率：${document.getElementById('ellloPct').value}%
+卡点：${document.getElementById('ellloHard').value}
+我选的表达：${document.getElementById('ellloChunks').value}
+复述：${document.getElementById('ellloRetell').value}
+
+要求：只挑2–3个真正值得主动化的表达；其余放 recognitionOnly。记录必要 grammar/pronunciation/listening 问题。如果我另附录音，请结合录音给 pronunciationNotes。reviewCards 每张包含 front, answer, variant, variantAnswer, question, type, source。`}
+document.getElementById('copyTranslatePrompt').onclick=()=>copyText(translationPrompt(),'已复制自然化提示词');document.getElementById('copyTeacherPacket').onclick=()=>copyText(teacherPacket(),'已复制教师分析包');document.getElementById('copyFullTeacherPacket').onclick=()=>copyText(teacherPacket(),'已复制完整分析包');
+
+async function storeFile(input,previewId){let f=input.files?.[0];if(!f)return null;let id=await putAudio(f,f.name);previewStored(id,previewId);return id}
+document.getElementById('ownRefFile').onchange=async e=>e.target.dataset.audioId=await storeFile(e.target,'ownRefPreview');
+document.getElementById('ownRecFile').onchange=async e=>e.target.dataset.audioId=await storeFile(e.target,'ownRecPreview');
+
+async function startRecording(target,sentenceIndex=null){
+  if(!navigator.mediaDevices?.getUserMedia)return alert('当前打开方式不支持麦克风。可上传录音代替，或通过 localhost/HTTPS 打开。');
+  try{let stream=await navigator.mediaDevices.getUserMedia({audio:true});mediaChunks=[];currentSentenceIndex=sentenceIndex;mediaRecorder=new MediaRecorder(stream);mediaRecorder.ondataavailable=e=>{if(e.data.size)mediaChunks.push(e.data)};mediaRecorder.onstop=async()=>{let blob=new Blob(mediaChunks,{type:mediaRecorder.mimeType||'audio/webm'}),id=await putAudio(blob,`${target}_${today()}.webm`);
+    if(target==='own'){document.getElementById('ownRecFile').dataset.audioId=id;previewStored(id,'ownRecPreview');document.getElementById('ownRecordBtn').classList.remove('hidden');document.getElementById('ownStopBtn').classList.add('hidden')}
+    if(target==='whole'){window.wholeRecId=id;previewStored(id,'wholeRecPrev');let x=await getAudio(id);analyzeAudioBlob(x.blob,'recWave','recWaveInfo')}
+    if(target==='sentence'){window.sentences[sentenceIndex].recAudio=id;window.sentences[sentenceIndex].done=true;renderSentences()}
+    stream.getTracks().forEach(t=>t.stop())};mediaRecorder.start()}catch(e){alert('无法开启麦克风，请检查权限。')}
+}
+function stopRecording(){if(mediaRecorder&&mediaRecorder.state!=='inactive')mediaRecorder.stop()}
+document.getElementById('ownRecordBtn').onclick=()=>{startRecording('own');document.getElementById('ownRecordBtn').classList.add('hidden');document.getElementById('ownStopBtn').classList.remove('hidden')};document.getElementById('ownStopBtn').onclick=stopRecording;
+document.getElementById('calcWpm').onclick=async()=>{let id=document.getElementById('ownRecFile').dataset.audioId;if(!id)return alert('请先上传或录制自己的音频。');let x=await getAudio(id),u=URL.createObjectURL(x.blob),a=new Audio(u);a.onloadedmetadata=()=>{let words=(document.getElementById('ownEn').value.match(/\b[\w’'-]+\b/g)||[]).length,wpm=Math.round(words/(a.duration/60));document.getElementById('ownWpm').textContent=`${words} 词 / ${a.duration.toFixed(1)} 秒 ≈ ${wpm} WPM。当前建议目标 135–150 WPM + 意群自然。`;URL.revokeObjectURL(u)}};
+
+function splitText(text){return text.replace(/\s+/g,' ').trim().match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map(x=>x.trim()).filter(Boolean)||[]}
+function renderSentences(){let box=document.getElementById('sentenceList');box.innerHTML=window.sentences.length?window.sentences.map((s,i)=>`<div class="sentence ${s.done?'active':''}"><div class="row" style="justify-content:space-between"><span class="sentence-status">Sentence ${i+1}</span>${s.done?'<span class="pill green">已录/通过</span>':''}</div><div class="sentence-text">${esc(s.text)}</div><div class="row" style="margin-top:8px"><button class="btn secondary small" onclick="speakSentence(${i})">TTS</button><button class="btn primary small" onclick="recordSentence(${i})">录这一句</button>${s.recAudio?`<button class="btn ghost small" onclick="playSentenceRec(${i})">听我的</button>`:''}<button class="btn ghost small" onclick="markSentence(${i})">${s.done?'取消通过':'标记通过'}</button></div></div>`).join(''):'<div class="muted">还没有句子。</div>'}
+document.getElementById('splitSentences').onclick=()=>{window.sentences=splitText(document.getElementById('sentenceText').value).map(t=>({text:t,done:false,recAudio:null}));renderSentences()};document.getElementById('load0922').onclick=()=>{document.getElementById('sentenceText').value=INITIAL_STATE.records[0].en;document.getElementById('splitSentences').click()};
+window.speakSentence=i=>{speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(window.sentences[i].text);u.lang='en-US';u.rate=1;speechSynthesis.speak(u)};window.recordSentence=i=>startRecording('sentence',i);window.playSentenceRec=async i=>{let x=await getAudio(window.sentences[i].recAudio);if(x)new Audio(URL.createObjectURL(x.blob)).play()};window.markSentence=i=>{window.sentences[i].done=!window.sentences[i].done;renderSentences()};
+document.getElementById('sentenceRefFile').onchange=async e=>{window.sentenceRefId=await storeFile(e.target,'sentenceRefPrev');let x=await getAudio(window.sentenceRefId);analyzeAudioBlob(x.blob,'refWave','refWaveInfo')};
+document.getElementById('recordWhole').onclick=()=>{startRecording('whole');document.getElementById('recordWhole').innerHTML='<span class="recordingDot"></span> 录音中';document.getElementById('stopWhole').classList.remove('hidden')};document.getElementById('stopWhole').onclick=()=>{stopRecording();document.getElementById('recordWhole').textContent='录整段';document.getElementById('stopWhole').classList.add('hidden')};document.getElementById('wholeRecFile').onchange=async e=>{window.wholeRecId=await storeFile(e.target,'wholeRecPrev');let x=await getAudio(window.wholeRecId);analyzeAudioBlob(x.blob,'recWave','recWaveInfo')};
+document.getElementById('saveSentenceSession').onclick=()=>{let date=document.getElementById('sentenceDate').value||today(),text=document.getElementById('sentenceText').value.trim();if(!text)return alert('请先填写训练文本。');state.records.push({id:'sentence_'+Date.now(),type:'sentence',date,title:'Sentence Lab',text,completed:window.sentences.filter(x=>x.done).length,total:window.sentences.length,referenceAudioId:window.sentenceRefId||null,recordingAudioId:window.wholeRecId||null,createdAt:new Date().toISOString()});updateStreak(date);save();alert('Sentence Lab 已进入统一归档。')};
+
+async function analyzeAudioBlob(blob,canvasId,infoId){
+  try{let arr=await blob.arrayBuffer(),ctx=new (window.AudioContext||window.webkitAudioContext)(),buf=await ctx.decodeAudioData(arr),data=buf.getChannelData(0),canvas=document.getElementById(canvasId),g=canvas.getContext('2d'),W=canvas.width,H=canvas.height;g.clearRect(0,0,W,H);g.strokeStyle='#275df5';g.beginPath();let step=Math.max(1,Math.floor(data.length/W));for(let x=0;x<W;x++){let start=x*step,min=1,max=-1;for(let j=0;j<step&&start+j<data.length;j++){let v=data[start+j];if(v<min)min=v;if(v>max)max=v}g.moveTo(x,(1+min)*H/2);g.lineTo(x,(1+max)*H/2)}g.stroke();let win=Math.max(1,Math.floor(buf.sampleRate*.05)),pauses=[],inPause=false,pStart=0,thr=.018;for(let i=0;i<data.length;i+=win){let sum=0,n=0;for(let j=i;j<Math.min(i+win,data.length);j++){sum+=data[j]*data[j];n++}let rms=Math.sqrt(sum/Math.max(1,n)),t=i/buf.sampleRate;if(rms<thr&&!inPause){inPause=true;pStart=t}if(rms>=thr&&inPause){if(t-pStart>=.22)pauses.push([pStart,t]);inPause=false}}let totalPause=pauses.reduce((a,p)=>a+(p[1]-p[0]),0);document.getElementById(infoId).textContent=`时长 ${buf.duration.toFixed(1)}s · ${pauses.length} 个 ≥0.22s 的低能量停顿 · 停顿约占 ${Math.round(totalPause/buf.duration*100)}%。这是节奏参考，不是发音评分。`;ctx.close()}catch(e){document.getElementById(infoId).textContent='无法解析该音频格式。'}
+}
+
+function renderErrors(){
+  document.getElementById('errorList').innerHTML=state.errors.sort((a,b)=>b.count-a.count).map(e=>`<div class="phrase"><div class="row" style="justify-content:space-between"><b>${esc(e.item)}</b><span class="pill ${e.count>=3?'red':'amber'}">${e.count} 次</span></div><div class="tiny">${esc(e.category)} · 最近 ${esc(e.last||'-')}</div><div class="muted" style="margin-top:5px">${esc(e.note||'')}</div><div class="row" style="margin-top:7px"><button class="btn secondary small" onclick="bumpError('${e.id}')">又出现了 +1</button><button class="btn ghost small" onclick="resolveError('${e.id}')">${e.status==='resolved'?'恢复关注':'标记已解决'}</button></div></div>`).join('');
+  let max=Math.max(1,...state.blindspots.map(x=>x.count||0));document.getElementById('blindspotBars').innerHTML=state.blindspots.map(b=>`<div class="barrow"><span>${esc(b.label)}</span><div class="bartrack"><div class="barfill" style="width:${Math.round((b.count||0)/max*100)}%"></div></div><b>${b.count||0}</b></div>`).join('')
+}
+window.bumpError=id=>{let e=state.errors.find(x=>x.id===id);e.count=(e.count||0)+1;e.last=today();e.status=e.count>=3?'focus':'watch';save()};window.resolveError=id=>{let e=state.errors.find(x=>x.id===id);e.status=e.status==='resolved'?'watch':'resolved';save()};document.getElementById('addErrorBtn').onclick=()=>{let item=prompt('记录什么问题？');if(!item)return;let category=prompt('类别：grammar / pronunciation / expression / listening','grammar')||'grammar';state.errors.push({id:'err_'+Date.now(),category,item,count:1,last:today(),status:'watch',note:''});save()};
+
+function renderPhrases(){let q=(document.getElementById('phraseSearch').value||'').toLowerCase();document.getElementById('phraseList').innerHTML=state.phrases.filter(p=>(p.text+' '+p.meaning+' '+p.example).toLowerCase().includes(q)).map(p=>`<div class="phrase" onclick="this.classList.toggle('open')"><div class="row"><b>${esc(p.text)}</b>${masteryDots(p.mastery||'Recognition')}${(p.tags||[]).map(t=>`<span class="pill">${esc(t)}</span>`).join('')}</div><div class="more"><div>${esc(p.meaning)}</div><div class="note" style="margin-top:7px">${esc(p.example)}</div></div></div>`).join('')}
+document.getElementById('phraseSearch').oninput=renderPhrases;
+
+function archiveText(r){return [r.title,r.zh,r.en,r.teacherEn,r.retell,r.hard,r.summary,r.teacherNote,(r.tags||[]).join(' '),(Array.isArray(r.chunks)?r.chunks.join(' '):r.chunks||'')].join(' ').toLowerCase()}
+function renderArchive(){
+  let q=(document.getElementById('archiveSearch').value||'').toLowerCase(),type=document.getElementById('archiveType').value,date=document.getElementById('archiveDate').value;
+  let arr=[...state.records].filter(r=>(!q||archiveText(r).includes(q))&&(type==='all'||r.type===type)&&(!date||r.date===date)).sort((a,b)=>(b.date||'').localeCompare(a.date||'')||(b.createdAt||'').localeCompare(a.createdAt||''));
+  let groups={};arr.forEach(r=>(groups[r.date]??=[]).push(r));let dates=Object.keys(groups).sort((a,b)=>b.localeCompare(a));
+  document.getElementById('archiveList').innerHTML=dates.length?dates.map(d=>`<div class="archive-day"><div class="archive-day-head"><div><b>${esc(d)}</b><div class="tiny">${groups[d].length} 条记录</div></div><span class="pill">${[...new Set(groups[d].map(x=>labelType(x.type)))].join(' · ')}</span></div><div class="archive-day-body">${groups[d].map(renderArchiveEntry).join('')}</div></div>`).join(''):'<div class="muted" style="padding:18px 0">没有符合筛选条件的记录。</div>'
+}
+function labelType(t){return ({own:'自己的英语',elllo:'ELLLO',sentence:'Sentence Lab',daily:'日结',voice:'Voice'})[t]||t}
+function renderArchiveEntry(r){
+  let head=`<div class="row" style="justify-content:space-between"><div><div class="archive-title">${esc(labelType(r.type))} · ${esc(r.title||'')}</div>${(r.tags||[]).map(t=>`<span class="pill">${esc(t)}</span>`).join('')}</div><button class="btn danger small" onclick="deleteRecord('${r.id}')">删除</button></div>`;
+  if(r.type==='own')return `<div class="archive-entry">${head}<div class="archive-grid"><div><div class="tiny">中文</div><div>${esc(r.zh||'')}</div></div><div><div class="tiny">英文</div><div>${esc(r.en||'')}</div></div></div>${r.teacherEn?`<details><summary>老师训练版</summary><div class="good">${esc(r.teacherEn)}</div></details>`:''}${r.retell?`<div class="note" style="margin-top:8px"><b>复述：</b>${esc(r.retell)}</div>`:''}${r.chunks?.length?`<div class="row" style="margin-top:8px">${r.chunks.map(c=>`<span class="pill">${esc(c)}</span>`).join('')}</div>`:''}${r.referenceAsset?assetAudio(r.referenceAsset,'参考音'):''}${(r.recordingAssets||[]).map((a,i)=>assetAudio(a,'录音 '+(i+1))).join('')}${r.teacherNote?`<div class="warn" style="margin-top:8px">${esc(r.teacherNote)}</div>`:''}<div id="dyn_${r.id}"></div></div>`;
+  if(r.type==='elllo')return `<div class="archive-entry">${head}${Number.isFinite(r.pct)?`<div class="tiny">首遍理解率：${r.pct}%</div>`:''}${r.hard?`<div class="note" style="margin-top:8px"><b>卡点：</b>${esc(r.hard)}</div>`:''}${r.chunks?.length?`<div class="row" style="margin-top:8px">${r.chunks.map(c=>`<span class="pill">${esc(c)}</span>`).join('')}</div>`:''}${r.retell?`<div class="note" style="margin-top:8px"><b>复述：</b>${esc(r.retell)}</div>`:''}${r.referenceAsset?assetAudio(r.referenceAsset,'ELLLO 原音'):''}${r.transcriptAsset?`<div class="tiny" style="margin-top:6px">Transcript：${esc(r.transcriptAsset)}</div>`:''}${r.teacherNote?`<div class="warn" style="margin-top:8px">${esc(r.teacherNote)}</div>`:''}</div>`;
+  if(r.type==='sentence')return `<div class="archive-entry">${head}<div class="tiny">完成句子：${r.completed||0}/${r.total||0}</div><div class="note" style="margin-top:8px">${esc(r.text||'')}</div><div id="dyn_${r.id}"></div></div>`;
+  if(r.type==='daily')return `<div class="archive-entry">${head}<div class="good">${esc(r.summary||'')}</div></div>`;
+  return `<div class="archive-entry">${head}</div>`
+}
+window.deleteRecord=id=>{if(confirm('删除这条归档？')){state.records=state.records.filter(x=>x.id!==id);save();renderArchive()}};
+document.getElementById('archiveSearch').oninput=renderArchive;document.getElementById('archiveType').onchange=renderArchive;document.getElementById('archiveDate').onchange=renderArchive;document.getElementById('clearArchiveFilter').onclick=()=>{document.getElementById('archiveSearch').value='';document.getElementById('archiveType').value='all';document.getElementById('archiveDate').value='';renderArchive()};
+
+function renderCalendar(){
+  let box=document.getElementById('calendar'),days=[];for(let i=27;i>=0;i--){let d=addDays(today(),-i),studied=state.records.some(r=>r.date===d)||state.reviewHistory.some(r=>r.date===d);days.push(`<div class="calcell ${studied?'study':''} ${d===today()?'today':''}" title="${d}">${d.slice(8)}</div>`)}box.innerHTML=days.join('')
+}
+function last7Dates(){let out=[];for(let i=6;i>=0;i--)out.push(addDays(today(),-i));return out}
+function renderWeekly(){
+  let dates=last7Dates(),rev=state.reviewHistory.filter(x=>dates.includes(x.date)).length,own=state.records.filter(x=>x.type==='own'&&dates.includes(x.date)).length,ell=state.records.filter(x=>x.type==='elllo'&&dates.includes(x.date)),sent=state.records.filter(x=>x.type==='sentence'&&dates.includes(x.date)).length;
+  document.getElementById('weeklyVolume').innerHTML=`<div class="metric"><span>复习卡完成</span><b>${rev}</b></div><div class="metric"><span>自己的英语</span><b>${own}</b></div><div class="metric"><span>ELLLO</span><b>${ell.length}</b></div><div class="metric"><span>Sentence Lab</span><b>${sent}</b></div>`;
+  let bs=[...state.blindspots].sort((a,b)=>b.count-a.count).slice(0,3);document.getElementById('weeklyBlind').innerHTML=bs.map(x=>`<div class="metric"><span>${esc(x.label)}</span><b>${x.count}</b></div>`).join('')||'<div class="muted">暂无</div>';
+  let es=[...state.errors].filter(x=>x.status!=='resolved').sort((a,b)=>b.count-a.count).slice(0,3);document.getElementById('weeklyErrors').innerHTML=es.map(x=>`<div class="metric"><span>${esc(x.item)}</span><b>${x.count}</b></div>`).join('')||'<div class="muted">暂无</div>';
+  let top=bs[0];document.getElementById('weeklyFocus').textContent=top&&top.count?`下周优先修复：${top.label}。在新的陌生材料中验证，而不是只重复旧材料。`:'继续保持当前体系，优先提高陌生材料的首遍理解率。';drawLine('ellloTrend',ell.map(x=>x.date.slice(5)),ell.map(x=>x.pct).filter(x=>Number.isFinite(x)))
+}
+function drawLine(id,labels,vals){let c=document.getElementById(id),g=c.getContext('2d'),W=c.width,H=c.height;g.clearRect(0,0,W,H);g.strokeStyle='#ccd5e4';g.beginPath();g.moveTo(35,10);g.lineTo(35,H-25);g.lineTo(W-15,H-25);g.stroke();if(!vals.length){g.fillStyle='#667085';g.fillText('暂无足够数据',55,75);return}let xs=vals.map((_,i)=>35+i*((W-60)/Math.max(vals.length-1,1))),ys=vals.map(v=>H-25-(v/100)*(H-45));g.strokeStyle='#275df5';g.lineWidth=3;g.beginPath();xs.forEach((x,i)=>i?g.lineTo(x,ys[i]):g.moveTo(x,ys[i]));g.stroke();g.fillStyle='#275df5';xs.forEach((x,i)=>{g.beginPath();g.arc(x,ys[i],4,0,Math.PI*2);g.fill();g.fillStyle='#667085';g.fillText(labels[i]||'',x-12,H-7);g.fillText(vals[i]+'%',x-10,ys[i]-8);g.fillStyle='#275df5'})}
+document.getElementById('copyWeekly').onclick=()=>{renderWeekly();copyText(`这是我的本周英语学习数据，请作为老师只给我下周最重要的1–2个改进重点：\n复习记录：${JSON.stringify(state.reviewHistory.filter(x=>last7Dates().includes(x.date)))}\n听力盲点：${JSON.stringify(state.blindspots)}\n错误日志：${JSON.stringify(state.errors)}\n本周ELLLO：${JSON.stringify(state.records.filter(x=>x.type==='elllo'&&last7Dates().includes(x.date)))}`,'已复制周报分析包')};
+
+const teacherTemplate={naturalEnglish:"...",simpleRetell:"...",activePhrases:[{text:"...",meaning:"...",example:"..."}],recognitionOnly:["..."],reviewCards:[{type:"phrase",source:"My English 2026-09-23",front:"中文提示",answer:"English target",variant:"中文变体",variantAnswer:"English variant",question:"Simple follow-up question"}],errors:[{category:"grammar",item:"...",note:"..."}],blindspots:[{category:"weak_forms",count:1}],pronunciationNotes:["..."],topPriority:"..."};
+document.getElementById('jsonTemplate').textContent=JSON.stringify(teacherTemplate,null,2);
+document.getElementById('importTeacherJson').onclick=()=>{try{let x=JSON.parse(document.getElementById('teacherJson').value);(x.activePhrases||[]).slice(0,3).forEach(p=>{if(!state.phrases.some(q=>q.text.toLowerCase()===String(p.text).toLowerCase()))state.phrases.push({text:p.text,meaning:p.meaning||'',example:p.example||'',tags:['active','AI'],mastery:'Recognition'})});(x.reviewCards||[]).slice(0,5).forEach((c,i)=>state.reviewCards.push({id:'rv_ai_'+Date.now()+'_'+i,type:c.type||'phrase',source:c.source||'AI Teacher',front:c.front||'',answer:c.answer||'',focus:c.answer||'',variant:c.variant||'',variantAnswer:c.variantAnswer||'',question:c.question||'',due:addDays(today(),1),interval:0,ease:2.5,priority:1,mastery:'Recognition',reps:0,lapses:0}));(x.errors||[]).forEach((e,i)=>{let old=state.errors.find(q=>q.item===e.item);if(old){old.count++;old.last=today();old.note=e.note||old.note}else state.errors.push({id:'err_ai_'+Date.now()+'_'+i,category:e.category||'expression',item:e.item,count:1,last:today(),status:'watch',note:e.note||''})});(x.blindspots||[]).forEach(b=>{let old=state.blindspots.find(q=>q.category===b.category);if(old){old.count+=(b.count||1);old.last=today()}});state.teacherFeedback.push({date:today(),data:x});document.getElementById('teacherImportMsg').textContent='导入成功。';save()}catch(e){document.getElementById('teacherImportMsg').textContent='JSON 无法解析。请让 ChatGPT 只返回标准 JSON。'}};
+
+function migrateV4(){
+  try{let old=JSON.parse(localStorage.getItem(V4KEY));if(!old||old.version!==4)return alert('没有检测到可迁移的 V4 本地数据。可用 V4 导出的 JSON 通过“导入 JSON”迁移。');
+    if(confirm('检测到 V4 数据。将把记录、复习、错误、盲点合并到 Final，是否继续？')){
+      (old.records||[]).forEach(r=>{if(!state.records.some(x=>x.id===r.id))state.records.push(r)});(old.reviewCards||[]).forEach(r=>{if(!state.reviewCards.some(x=>x.id===r.id))state.reviewCards.push(r)});state.reviewHistory=[...(state.reviewHistory||[]),...(old.reviewHistory||[])];(old.errors||[]).forEach(e=>{if(!state.errors.some(x=>x.item===e.item))state.errors.push(e)});(old.blindspots||[]).forEach(b=>{let x=state.blindspots.find(q=>q.category===b.category);if(x)x.count=Math.max(x.count||0,b.count||0)});save();alert('迁移完成。')
+    }}catch(e){alert('V4 迁移失败。建议导出 V4 JSON 后在这里导入。')}
+}
+document.getElementById('migrateV4').onclick=migrateV4;
+
+
+// ===== Preconfigured free cloud endpoint =====
+(function(){
+  const k='myEnglishLabCloudConfigV1';
+  if(!localStorage.getItem(k)){
+    localStorage.setItem(k, JSON.stringify({
+      url:"https://zbcucfzhngvpikzjdfhg.supabase.co",
+      key:"sb_publishable_5OYuh_WEaPnw_2aMfbaHog_ryMU4kJj"
+    }));
+  }
+})();
+
+// ===== FREE CLOUD SYNC: Supabase snapshot + private audio storage =====
+const CLOUD_CFG_KEY='myEnglishLabCloudConfigV1';
+const CLOUD_SYNC_TS_KEY='myEnglishLabCloudLastSyncV1';
+let cloudClient=null, cloudUser=null, cloudPushTimer=null, cloudApplying=false;
+
+function cloudMsg(msg,ok=true){
+  const el=document.getElementById('cloudSyncMsg'); if(el) el.textContent=msg||'';
+  const badge=document.getElementById('cloudStatusBadge');
+  if(badge){badge.textContent=cloudUser?'已登录 / 自动同步':(cloudClient?'已配置':'未配置');badge.className='module-badge';}
+}
+function loadCloudConfig(){
+  try{return JSON.parse(localStorage.getItem(CLOUD_CFG_KEY)||'{}')}catch(_){return {}}
+}
+function saveCloudConfig(){
+  const cfg={url:(document.getElementById('cloudUrl')?.value||'').trim(),key:(document.getElementById('cloudAnonKey')?.value||'').trim()};
+  localStorage.setItem(CLOUD_CFG_KEY,JSON.stringify(cfg)); initCloudClient(); return cfg;
+}
+async function initCloudClient(){
+  const cfg=loadCloudConfig();
+  if(document.getElementById('cloudUrl'))document.getElementById('cloudUrl').value=cfg.url||'';
+  if(document.getElementById('cloudAnonKey'))document.getElementById('cloudAnonKey').value=cfg.key||'';
+  if(!cfg.url||!cfg.key||!window.supabase){cloudClient=null;cloudUser=null;cloudMsg('请先填写 Supabase URL 和 Anon Key。');return false}
+  try{
+    cloudClient=window.supabase.createClient(cfg.url,cfg.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+    const {data}=await cloudClient.auth.getSession(); cloudUser=data?.session?.user||null;
+    updateCloudUserUI();
+    cloudClient.auth.onAuthStateChange((_event,session)=>{cloudUser=session?.user||null;updateCloudUserUI(); if(cloudUser) smartCloudStartup()});
+    if(cloudUser) await smartCloudStartup();
+    return true;
+  }catch(e){cloudClient=null;cloudUser=null;cloudMsg('云端初始化失败：'+(e?.message||e));return false}
+}
+function updateCloudUserUI(){
+  const t=document.getElementById('cloudUserText');if(t)t.textContent=cloudUser?`已登录：${cloudUser.email||cloudUser.id}`:'未登录';
+  cloudMsg(cloudUser?'云同步已就绪。':'已配置 Supabase，登录后开始同步。');
+}
+async function testCloud(){
+  if(!cloudClient) await initCloudClient();
+  if(!cloudClient) return;
+  try{
+    const {error}=await cloudClient.from('app_snapshots').select('updated_at').limit(1);
+    if(error)throw error;
+    document.getElementById('cloudConfigMsg').textContent='连接成功 ✓';
+  }catch(e){document.getElementById('cloudConfigMsg').textContent='连接失败：'+(e?.message||e)}
+}
+async function cloudSignUp(){
+  saveCloudConfig(); if(!cloudClient)return;
+  const email=document.getElementById('cloudEmail').value.trim(),password=document.getElementById('cloudPassword').value;
+  if(!email||password.length<6)return alert('请输入邮箱，并设置至少 6 位密码。');
+  const {data,error}=await cloudClient.auth.signUp({email,password});
+  if(error)return alert('注册失败：'+error.message);
+  cloudUser=data?.user||null; updateCloudUserUI();
+  alert(data?.session?'注册并登录成功。':'注册成功。若 Supabase 开启邮箱验证，请先去邮箱点确认链接，再回来登录。');
+}
+async function cloudLogin(){
+  saveCloudConfig(); if(!cloudClient)return;
+  const email=document.getElementById('cloudEmail').value.trim(),password=document.getElementById('cloudPassword').value;
+  const {data,error}=await cloudClient.auth.signInWithPassword({email,password});
+  if(error)return alert('登录失败：'+error.message);
+  cloudUser=data?.user||null; updateCloudUserUI(); await smartCloudStartup();
+}
+async function cloudLogout(){
+  if(cloudClient)await cloudClient.auth.signOut();cloudUser=null;updateCloudUserUI();
+}
+async function pushCloudState(showAlert=false){
+  if(cloudApplying||!cloudClient||!cloudUser)return false;
+  try{
+    const now=new Date().toISOString();
+    const payload={user_id:cloudUser.id,state:state,updated_at:now};
+    const {error}=await cloudClient.from('app_snapshots').upsert(payload,{onConflict:'user_id'});
+    if(error)throw error;
+    localStorage.setItem(CLOUD_SYNC_TS_KEY,now);cloudMsg('已同步到云端：'+new Date().toLocaleTimeString());
+    if(showAlert)alert('本机最新进度已上传到云端。');
+    return true;
+  }catch(e){cloudMsg('自动同步失败：'+(e?.message||e),false);if(showAlert)alert('上传失败：'+(e?.message||e));return false}
+}
+function scheduleCloudPush(){
+  if(cloudApplying||!cloudClient||!cloudUser)return;
+  clearTimeout(cloudPushTimer);cloudPushTimer=setTimeout(()=>pushCloudState(false),1100);
+}
+async function fetchCloudSnapshot(){
+  if(!cloudClient||!cloudUser)return null;
+  const {data,error}=await cloudClient.from('app_snapshots').select('state,updated_at').eq('user_id',cloudUser.id).maybeSingle();
+  if(error)throw error;return data||null;
+}
+async function pullCloudState(showAlert=false){
+  if(!cloudClient||!cloudUser)return alert('请先登录云同步账号。');
+  try{
+    const remote=await fetchCloudSnapshot();
+    if(!remote){await pushCloudState(false);if(showAlert)alert('云端还没有数据，已把本机当前进度作为第一份云端数据。');return}
+    if(!remote.state||remote.state.version!==5)throw new Error('云端数据版本不兼容');
+    cloudApplying=true;state=remote.state;localStorage.setItem(KEY,JSON.stringify(state));localStorage.setItem(CLOUD_SYNC_TS_KEY,remote.updated_at||new Date().toISOString());
+    cloudApplying=false;loadDrafts();renderAll();cloudMsg('已从云端恢复：'+new Date(remote.updated_at).toLocaleString());
+    if(showAlert)alert('已从云端恢复最新学习进度。');
+  }catch(e){cloudApplying=false;alert('恢复失败：'+(e?.message||e))}
+}
+async function smartCloudStartup(){
+  if(!cloudClient||!cloudUser)return;
+  try{
+    const remote=await fetchCloudSnapshot();
+    if(!remote){await pushCloudState(false);return}
+    const lastLocal=localStorage.getItem(CLOUD_SYNC_TS_KEY);
+    // First login on a device: remote wins. Afterwards compare last known sync timestamp.
+    if(!lastLocal || new Date(remote.updated_at).getTime()>new Date(lastLocal).getTime()+500){
+      cloudApplying=true;state=remote.state;localStorage.setItem(KEY,JSON.stringify(state));localStorage.setItem(CLOUD_SYNC_TS_KEY,remote.updated_at);cloudApplying=false;loadDrafts();renderAll();cloudMsg('已自动加载云端最新进度。');
+    }else{
+      cloudMsg('云端同步已连接。');
+    }
+  }catch(e){cloudMsg('云端读取失败：'+(e?.message||e),false)}
+}
+async function uploadAudioToCloud(id,blob){
+  if(!cloudClient||!cloudUser||!id||!blob)return false;
+  const path=`${cloudUser.id}/${id}`;
+  const {error}=await cloudClient.storage.from('audio').upload(path,blob,{upsert:true,contentType:blob.type||'application/octet-stream'});
+  if(error)throw error;return true;
+}
+async function downloadAudioFromCloud(id){
+  if(!cloudClient||!cloudUser||!id)return null;
+  try{
+    const path=`${cloudUser.id}/${id}`;
+    const {data,error}=await cloudClient.storage.from('audio').download(path);
+    if(error)return null;
+    return {id,blob:data,name:'云端录音 '+id,mime:data.type||'audio/webm',created:Date.now()};
+  }catch(_){return null}
+}
+async function syncAllLocalAudio(){
+  if(!cloudClient||!cloudUser)return alert('请先登录云同步账号。');
+  if(!db)await openDB();
+  const all=await new Promise((resolve,reject)=>{const r=db.transaction(STORE,'readonly').objectStore(STORE).getAll();r.onsuccess=()=>resolve(r.result||[]);r.onerror=()=>reject(r.error)});
+  let ok=0,fail=0;
+  cloudMsg(`正在同步 ${all.length} 个本机音频…`);
+  for(const x of all){try{await uploadAudioToCloud(x.id,x.blob);ok++}catch(_){fail++}}
+  cloudMsg(`音频同步完成：成功 ${ok}，失败 ${fail}。`);
+  alert(`音频同步完成：成功 ${ok}，失败 ${fail}。`);
+}
+
+document.getElementById('maxReviewsSetting').value=state.settings.maxReviews;document.getElementById('warningSetting').value=state.settings.reviewLimitWarning;
+document.getElementById('saveSettings').onclick=()=>{state.settings.maxReviews=+document.getElementById('maxReviewsSetting').value||8;state.settings.reviewLimitWarning=+document.getElementById('warningSetting').value||12;save();alert('设置已保存。')};
+document.getElementById('exportBtn').onclick=()=>{let b=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='my_english_lab_final_'+today()+'.json';a.click();URL.revokeObjectURL(u)};
+document.getElementById('importInput').onchange=e=>{let f=e.target.files?.[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(x.version===4){x.version=5;x.drafts=x.drafts||clone(INITIAL_STATE.drafts);x.settings={...clone(INITIAL_STATE.settings),...(x.settings||{})}}if(x.version!==5)throw 0;state=x;save();loadDrafts();alert('导入完成')}catch(_){alert('不是有效的 Final/V4 备份')}};r.readAsText(f)};
+document.getElementById('resetBtn').onclick=()=>{if(confirm('恢复 Final 初始状态？')){state=clone(INITIAL_STATE);save();loadDrafts()}};
+
+function renderStats(){
+  let due=dueCards().length,rev=state.reviewHistory.filter(x=>x.date===today()).length,tomorrow=state.reviewCards.filter(c=>c.due===addDays(today(),1)).length,active=state.phrases.filter(x=>x.tags?.includes('active')).length,errors=state.errors.filter(x=>x.status!=='resolved').length;
+  document.getElementById('statDue').textContent=due;document.getElementById('statReviewed').textContent=rev;document.getElementById('statTomorrow').textContent=tomorrow;document.getElementById('statActive').textContent=active;document.getElementById('statErrors').textContent=errors;document.getElementById('statArchive').textContent=state.records.length;document.getElementById('streakPill').textContent=`连续学习 ${state.streak.count||1} 天`;
+  if(due>(state.settings.reviewLimitWarning||12))document.getElementById('todayFocus').textContent=`当前复习债务 ${due} 张，今天不要新增太多新语块，先清理旧卡。`
+}
+function renderAll(){renderStats();renderFlow();renderReview();renderErrors();renderPhrases();renderCalendar();if(!document.getElementById('archive').classList.contains('hidden'))renderArchive();if(!document.getElementById('weekly').classList.contains('hidden'))renderWeekly()}
+
+// Cloud sync UI handlers
+document.getElementById('saveCloudConfig').onclick=()=>{saveCloudConfig();document.getElementById('cloudConfigMsg').textContent='已保存。'};
+document.getElementById('testCloudConfig').onclick=async()=>{saveCloudConfig();await testCloud()};
+document.getElementById('cloudSignup').onclick=cloudSignUp;
+document.getElementById('cloudLogin').onclick=cloudLogin;
+document.getElementById('cloudLogout').onclick=cloudLogout;
+document.getElementById('cloudPull').onclick=()=>pullCloudState(true);
+document.getElementById('cloudPush').onclick=()=>pushCloudState(true);
+document.getElementById('cloudSyncAudio').onclick=syncAllLocalAudio;
+
+(async()=>{try{await openDB()}catch(e){}initDates();loadDrafts();bindDrafts();renderAll();await initCloudClient()})();
+</script>
+</body></html>
