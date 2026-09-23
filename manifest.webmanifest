@@ -1,0 +1,19 @@
+{
+  "name": "My English Lab",
+  "short_name": "English Lab",
+  "description": "Personal English learning lab with private multi-device sync",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f7fb",
+  "theme_color": "#111827",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
